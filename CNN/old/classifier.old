@@ -1,0 +1,98 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import skimage.io as io
+from scipy import ndimage
+from skimage import filters, img_as_float, img_as_ubyte
+from skimage.restoration import denoise_bilateral
+from skimage.color import gray2rgb
+import cv2
+import pickle
+from sklearn.svm import SVC
+from skimage.color import grey2rgb
+from skimage.util import invert
+from skimage.filters import threshold_sauvola, threshold_mean
+from preprocessing import preprocess
+
+STRIDE = 50
+THRESH = 200
+
+
+
+def classify(image):
+    
+    img_denoised = ndimage.filters.median_filter(image,3)
+    thresh_sauvola = threshold_sauvola(img_denoised, window_size=25)
+    binary_sauvola = image < thresh_sauvola
+    
+    cv_image = img_as_ubyte(binary_sauvola)
+    cv_image = cv2.medianBlur(cv_image,3)
+
+    rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (4, 2))
+    dilation = cv2.dilate(cv_image, rect_kernel, iterations = 4)
+    io.imsave("a.png", img_as_float(dilation))
+    _, contours ,_ = cv2.findContours(dilation, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+    rectangles = []
+    for c in contours:
+        x, y, w, h = cv2.boundingRect(c)
+        rectangles.append([x,y,w,h])
+
+    grouped_rectangles, _ = cv2.groupRectangles(rectangles, 0, 10e6)
+
+    w_tresh = 0.3*grouped_rectangles.T[2].mean()
+    h_tresh = 0.3*grouped_rectangles.T[3].mean()
+
+    grouped_rectangles = grouped_rectangles[grouped_rectangles.T[2] > w_tresh,:]
+    grouped_rectangles = grouped_rectangles[grouped_rectangles.T[3] > h_tresh,:]
+
+
+    image = image > thresh_sauvola
+    image = img_as_float(image)
+    
+
+    #grouped_rectangles = grouped_rectangles[grouped_rectangles.T[2] < grouped_rectangles.T[2].max()-20,:]
+
+    #for i,(x,y,w,h) in enumerate(grouped_rectangles):
+    #    cv2.rectangle(cv_image, (x, y), (x + w, y + h), 255, 1)
+    #    cv2.putText(cv_image, str(i) , (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1.0, 255) 
+
+    io.imsave("kl.png", img_as_float(cv_image))
+
+    cnn_model = pickle.load(open("models/cnn_binary.sav", "rb"))
+    cvim = cv2.imread("test.png")
+    step_v = 0
+    for i,(x,y,w,h) in enumerate(grouped_rectangles):
+        im = image[y:y+h, x:x+w]
+        votes_printed = 0
+        votes_hw = 0
+        if im.shape[0] < STRIDE:
+            im = cv2.copyMakeBorder(im, (STRIDE - im.shape[0]),0,0,0, cv2.BORDER_WRAP)
+        step_v = 0
+        for step_v in range(0, im.shape[0], 5):
+            step_h = 0
+            if (step_v + STRIDE > im.shape[0]):
+                break
+            while (step_h + STRIDE) < im.shape[1]:
+                box = np.array(im[step_v:step_v+STRIDE, step_h:step_h+STRIDE]).reshape(50,50,1)
+                box = box[np.newaxis,:]
+                pred = cnn_model.predict(box)
+                if pred.flatten()[0] > 0.5:
+                    votes_hw = votes_hw + 1
+                    #io.imsave('pred_hw/'+str(i)+str(step_v)+str(step_h)+'.png', im[step_v:step_v+STRIDE, step_h:step_h+STRIDE])
+                if pred.flatten()[1] > 0.5:
+                    votes_printed = votes_printed + 1
+                    #io.imsave('pred_printed/'+str(i)+str(step_v)+str(step_h)+'.png', im[step_v:step_v+STRIDE, step_h:step_h+STRIDE])
+                step_h = step_h + 10
+            if votes_hw > votes_printed:
+                cv2.rectangle(cvim, (x, y), (x + w, y + h), (255,0,0),2,4)
+            elif votes_hw < votes_printed:
+                cv2.rectangle(cvim, (x, y), (x + w, y + h), (0,255,0),2,4)
+                
+       
+        
+
+
+    io.imsave("res.png", img_as_float(cvim))
+
+
+if __name__ == "__main__":
+    classify(img_as_float(io.imread("test.png")))

@@ -1,0 +1,657 @@
+<html><!-- #BeginTemplate "/Templates/index2.dwt" --><head>
+
+
+<script type="text/javascript" src="Layout%20Types_files/analytics.js"></script>
+<script type="text/javascript">archive_analytics.values.server_name="wwwb-app0.us.archive.org";archive_analytics.values.server_ms=151;</script>
+<link type="text/css" rel="stylesheet" href="Layout%20Types_files/banner-styles.css">
+
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Ground Truth Data for Biomedical Journals</title>
+<!-- #EndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+.tabledtext {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #000000}
+.sidebartable {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #666666}
+h1 {  font-family: Georgia, "Times New Roman", Times, serif; font-size: 36px; font-weight: normal; color: #999999}
+h2 {  font-family: Georgia, "Times New Roman", Times, serif; font-size: 14px; color: #FF7700}
+.emphatic {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; color: #999999}
+-->
+</style>
+<script language="JavaScript">
+<!--
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+
+function MM_swapImgRestore() { //v3.0
+  
+  var i,x,a=document.MM_sr; 
+  
+  for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) 
+  	x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.0
+	var p,i,x;  
+  	if(!d) 
+  		d=document; 
+  	if((p=n.indexOf("?"))>0&&parent.frames.length) 
+	{
+    	d=parent.frames[n.substring(p+1)].document; 
+		n=n.substring(0,p);
+	}
+  	if(!(x=d[n])&&d.all) 
+		x=d.all[n]; 
+	for (i=0;!x&&i<d.forms.length;i++) 
+		x=d.forms[i][n];
+  	for(i=0;!x&&d.layers&&i<d.layers.length;i++) 
+		x=MM_findObj(n,d.layers[i].document);
+  	if(!x && document.getElementById) 
+		x=document.getElementById(n); 
+	return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function pviiW3Cbg(obj, pviiColor) { //v1.1 by Project VII
+	obj.style.backgroundColor=pviiColor
+}
+
+function P7_autoLayers() { //v1.1 PVII
+ var g,b,k,f,args=P7_autoLayers.arguments;
+ if(!document.p7setc) 
+ {
+ 	p7c=new Array();
+	document.p7setc=true;
+ }
+ for(k=0; k<p7c.length; k++) 
+ {
+ 	if((g=MM_findObj(p7c[k]))!=null) 
+	{
+   		b=(document.layers)?g:g.style;b.visibility="hidden";
+	}
+ }
+ for(k=0; k<args.length; k++) 
+ {
+ 	if((g=MM_findObj(args[k])) != null) 
+	{
+   		b=(document.layers)?g:g.style;b.visibility="visible";f=false;
+   		for(j=0;j<p7c.length;j++) 
+		{
+    		if(args[k]==p7c[j]) 
+			{
+				f=true;
+			}
+		}
+  		if(!f) 
+		{
+			p7c[p7c.length++]=args[k];
+  		}
+	}
+ }
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+</head>
+<body onload="MM_preloadImages('assets/images/Roverrollover.gif','assets/images/Newsrollover.gif','assets/images/WebBoardrollover.gif','assets/images/Ground%20Truth%20Files%20rollover.gif')" text="#000000" bgcolor="#FFFFFF"><div id="wm-ipp" style="display: block;" lang="en">
+
+<div style="position:fixed;left:0;top:0;width:100%!important">
+<div id="wm-ipp-inside">
+   <table style="width:100%;"><tbody><tr>
+   <td id="wm-logo">
+       <a href="https://web.archive.org/web/" title="Wayback Machine home page"><img src="Layout%20Types_files/wayback-toolbar-logo.png" alt="Wayback Machine" height="39" width="110" border="0"></a>
+   </td>
+   <td class="c">
+       <table style="margin:0 auto;"><tbody><tr>
+       <td class="u" colspan="2">
+       <form target="_top" method="get" action="/web/form-submit.jsp" name="wmtb" id="wmtb"><input name="url" id="wmtbURL" value="http://marg.nlm.nih.gov/gtdefinition.asp" style="width:400px;" onfocus="this.focus();this.select();" type="text"><input name="type" value="replay" type="hidden"><input name="date" value="20130213212803" type="hidden"><input value="Go" type="submit"><span id="wm_tb_options" style="display:block;"></span></form>
+       </td>
+       <td class="n" rowspan="2">
+           <table><tbody>
+           <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+           <tr class="m">
+           	<td class="b" nowrap="nowrap">
+		
+		    <a href="https://web.archive.org/web/20120427003255/http://marg.nlm.nih.gov/gtdefinition.asp" title="27 Apr 2012">APR</a>
+		
+		</td>
+		<td class="c" id="displayMonthEl" title="You are here: 21:28:03 Feb 13, 2013">FEB</td>
+		<td class="f" nowrap="nowrap">
+		
+		    <a href="https://web.archive.org/web/20130703100653/http://marg.nlm.nih.gov/gtdefinition.asp" title="3 Jul 2013"><strong>JUL</strong></a>
+		
+                </td>
+	    </tr>
+           <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+           <tr class="d">
+               <td class="b" nowrap="nowrap">
+               
+                   <a href="https://web.archive.org/web/20120427003255/http://marg.nlm.nih.gov/gtdefinition.asp" title="0:32:55 Apr 27, 2012"><img src="Layout%20Types_files/wm_tb_prv_on.png" alt="Previous capture" height="16" width="14" border="0"></a>
+               
+               </td>
+               <td class="c" id="displayDayEl" style="width:34px;font-size:24px;" title="You are here: 21:28:03 Feb 13, 2013">13</td>
+	       <td class="f" nowrap="nowrap">
+               
+		   <a href="https://web.archive.org/web/20130703100653/http://marg.nlm.nih.gov/gtdefinition.asp" title="10:06:53 Jul 3, 2013"><img src="Layout%20Types_files/wm_tb_nxt_on.png" alt="Next capture" height="16" width="14" border="0"></a>
+	       
+	       </td>
+           </tr>
+           <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+           <tr class="y">
+	       <td class="b" nowrap="nowrap">
+               
+                   <a href="https://web.archive.org/web/20120213063802/http://marg.nlm.nih.gov/gtdefinition.asp" title="13 Feb 2012"><strong>2012</strong></a>
+               
+               </td>
+               <td class="c" id="displayYearEl" title="You are here: 21:28:03 Feb 13, 2013">2013</td>
+	       <td class="f" nowrap="nowrap">
+               
+                   2014
+               
+	       </td>
+           </tr>
+           </tbody></table>
+       </td>
+       </tr>
+       <tr>
+       <td class="s">
+           <a class="t" href="https://web.archive.org/web/20130213212803*/http://marg.nlm.nih.gov/gtdefinition.asp" title="See a list of every capture for this URL">95 captures</a>
+           <div class="r" title="Timespan for captures of this URL">25 Dec 03 - 3 Jul 13</div>
+       </td>
+       <td class="k">
+       <a href="" id="wm-graph-anchor">
+       <div id="wm-ipp-sparkline" title="Explore captures for this URL">
+	 <img id="sparklineImgId" alt="sparklines" onmouseover="__wm.st(1)" onmouseout="__wm.st(0)" onmousemove="__wm.mv(event,this)" src="Layout%20Types_files/graph.png" height="27" width="525" border="0">
+       <div style="display: none; width: 25px; height: 27px;" class="yt"></div><div style="display: none; width: 2px; height: 27px;" class="mt"></div></div>
+       </a>
+       </td>
+       </tr></tbody></table>
+   </td>
+   <td class="r">
+       <a href="#close" onclick="__wm.h();return false;" style="background-image:url(/static/images/toolbar/wm_tb_close.png);top:5px;" title="Close the toolbar">Close</a>
+       <a href="http://faq.web.archive.org/" style="background-image:url(/static/images/toolbar/wm_tb_help.png);bottom:5px;" title="Get some help using the Wayback Machine">Help</a>
+   </td>
+   </tr></tbody></table>
+</div>
+</div>
+</div>
+
+
+<!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script type="text/javascript" src="Layout%20Types_files/disclaim-element.js"></script>
+<script type="text/javascript" src="Layout%20Types_files/graph-calc.js"></script>
+<script type="text/javascript">//<![CDATA[
+var __wm = (function(imgWidth,imgHeight,yearImgWidth,monthImgWidth){
+var wbPrefix = "/web/";
+var wbCurrentUrl = "http://marg.nlm.nih.gov/gtdefinition.asp";
+
+var firstYear = 1996;
+var displayDay = "13";
+var displayMonth = "Feb";
+var displayYear = "2013";
+var prettyMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var $D=document,$=function(n){return document.getElementById(n)};
+var trackerVal,curYear = -1,curMonth = -1;
+var yearTracker,monthTracker;
+function showTrackers(val) {
+  if (val===trackerVal) return;
+  var $ipp=$("wm-ipp");
+  var $y=$("displayYearEl"),$m=$("displayMonthEl"),$d=$("displayDayEl");
+  if (val) {
+    $ipp.className="hi";
+  } else {
+    $ipp.className="";
+    $y.innerHTML=displayYear;$m.innerHTML=displayMonth;$d.innerHTML=displayDay;
+  }
+  yearTracker.style.display=val?"inline":"none";
+  monthTracker.style.display=val?"inline":"none";
+  trackerVal = val;
+}
+function trackMouseMove(event,element) {
+  var eventX = getEventX(event);
+  var elementX = getElementX(element);
+  var xOff = Math.min(Math.max(0, eventX - elementX),imgWidth);
+  var monthOff = xOff % yearImgWidth;
+
+  var year = Math.floor(xOff / yearImgWidth);
+  var monthOfYear = Math.min(11,Math.floor(monthOff / monthImgWidth));
+  // 1 extra border pixel at the left edge of the year:
+  var month = (year * 12) + monthOfYear;
+  var day = monthOff % 2==1?15:1;
+  var dateString = zeroPad(year + firstYear) + zeroPad(monthOfYear+1,2) +
+    zeroPad(day,2) + "000000";
+
+  $("displayYearEl").innerHTML=year+firstYear;
+  $("displayMonthEl").innerHTML=prettyMonths[monthOfYear];
+  // looks too jarring when it changes..
+  //$("displayDayEl").innerHTML=zeroPad(day,2);
+  var url = wbPrefix + dateString + '/' +  wbCurrentUrl;
+  $("wm-graph-anchor").href=url;
+
+  if(curYear != year) {
+    var yrOff = year * yearImgWidth;
+    yearTracker.style.left = yrOff + "px";
+    curYear = year;
+  }
+  if(curMonth != month) {
+    var mtOff = year + (month * monthImgWidth) + 1;
+    monthTracker.style.left = mtOff + "px";
+    curMonth = month;
+  }
+}
+function hideToolbar() {
+  $("wm-ipp").style.display="none";
+}
+function bootstrap() {
+  var $spk=$("wm-ipp-sparkline");
+  yearTracker=$D.createElement('div');
+  yearTracker.className='yt';
+  with(yearTracker.style){
+    display='none';width=yearImgWidth+"px";height=imgHeight+"px";
+  }
+  monthTracker=$D.createElement('div');
+  monthTracker.className='mt';
+  with(monthTracker.style){
+    display='none';width=monthImgWidth+"px";height=imgHeight+"px";
+  }
+  $spk.appendChild(yearTracker);
+  $spk.appendChild(monthTracker);
+
+  var $ipp=$("wm-ipp");
+  $ipp&&disclaimElement($ipp);
+}
+return{st:showTrackers,mv:trackMouseMove,h:hideToolbar,bt:bootstrap};
+})(525, 27, 25, 2);//]]>
+</script>
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  min-width:800px !important;
+}
+</style>
+
+<script type="text/javascript">__wm.bt();</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+
+<div id="Layer1" style="position:absolute; width:162; z-index:2; left: 12; top: 24; visibility: visible"> 
+  <table width="162" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr> 
+      <td><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/index2.asp"><img src="Layout%20Types_files/pathfinder_rover.jpg" height="208" width="162" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/news.asp" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('NewsRollover','','assets/images/Newsrollover.gif',1)" onfocus="if(this.blur)this.blur()"><img name="NewsRollover" src="Layout%20Types_files/Newstrig1.gif" onmouseover="P7_autoLayers()" height="31" width="162" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/roverintro.asp" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('roverrollover','','assets/images/Roverrollover.gif',1)" onfocus="if(this.blur)this.blur()"><img name="roverrollover" src="Layout%20Types_files/Rovertrig2.gif" onmouseover="P7_autoLayers('Layer2','menucloser')" height="31" width="162" border="0"></a></td>
+    </tr>
+<!--
+    <tr> 
+      <td><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('WebBoardRollOver','','assets/images/WebBoardrollover.gif',1)" onFocus="if(this.blur)this.blur()"><img name="WebBoardRollOver" border="0" src="assets/images/WebBoard.gif" width="162" height="31" onMouseOver="P7_autoLayers()" onClick="MM_openBrWindow('cgi-bin/ikonboard.pl','PathFinderWebBoard','toolbar=yes,location=yes,status=yes,scrollbars=yes,resizable=yes')"></a></td>
+    </tr>
+-->
+    <tr> 
+      <td><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/gtintro.asp" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('GroundTruthRollover','','assets/images/GroundTruthFilesrollover.gif',1)" onfocus="if(this.blur)this.blur()"><img name="GroundTruthRollover" src="Layout%20Types_files/GroundTruthFiles.gif" onmouseover="P7_autoLayers('GTFilesFlyout')" height="31" width="162" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td><img src="Layout%20Types_files/ceb.gif" onmouseover="P7_autoLayers()" href="http://www.nlm.nih.gov/" height="31" width="162" border="0"></td>
+    </tr>
+  </tbody></table>
+</div>
+<div id="Layer2" style="position:absolute; width:151; z-index:3; left: 173px; top: 242px; visibility: hidden"> 
+  <table width="151" bgcolor="#CCCCCC" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/roverintro.asp"><img src="Layout%20Types_files/roverintro.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/roverhistory.asp"><img src="Layout%20Types_files/roverhistory.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/roverapp.asp"><img src="Layout%20Types_files/rover.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+  </tbody></table>
+</div>
+<div id="menucloser" style="position:absolute; width:500; height:500; z-index:1; left: 0; top: 0; visibility: hidden"><img src="Layout%20Types_files/shim.gif" onmouseover="P7_autoLayers()" height="599" width="647"></div>
+<table width="151" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr> 
+    <td>&nbsp;</td>
+  </tr>
+</tbody></table>
+<div id="GTFilesFlyout" style="position:absolute; width:151; z-index:4; left: 173px; top: 215px; visibility: hidden"> 
+  <table width="151" border="0" cellpadding="0" cellspacing="0">
+    <tbody><tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/gtintro.asp"><img src="Layout%20Types_files/GTIntro.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/gtdefinition.asp"><img src="Layout%20Types_files/GTLayoutDef.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/allgtfiles.asp"><img src="Layout%20Types_files/GTdownload.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_a.asp"><img src="Layout%20Types_files/GT_A.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_b.asp"><img src="Layout%20Types_files/GT_B.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_c.asp"><img src="Layout%20Types_files/GT_C.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_d.asp"><img src="Layout%20Types_files/GT_D.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_e.asp"><img src="Layout%20Types_files/GT_E.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_f.asp"><img src="Layout%20Types_files/GT_F.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_g.asp"><img src="Layout%20Types_files/GT_G.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_h.asp"><img src="Layout%20Types_files/GT_H.GIF" height="24" width="151" border="0"></a></td>
+    </tr>
+    <tr> 
+      <td onmouseover="pviiW3Cbg(this, '#0099FF')" onmouseout="pviiW3Cbg(this, '#CCCCCC')" bgcolor="#CCCCCC"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_other.asp"><img src="Layout%20Types_files/GTother.gif" height="24" width="151" border="0"></a></td>
+    </tr>
+  </tbody></table>
+</div>
+<table onmouseover="P7_autoLayers()" width="100%" border="0" cellpadding="0" cellspacing="36">
+  <tbody><tr> 
+    <td height="2" width="180"><img src="Layout%20Types_files/shim.gif" height="12" width="140"></td>
+    <td class="tabledtext" height="2" valign="top"><!-- #BeginEditable "Heading%201" --> 
+      <h1>Layout types</h1>
+      <p>The page layouts selected for this ground truth collection represent 
+        typical biomedical journals from which we automatically extracted bibliographic 
+        fields (e.g., article Title, Authors, Affiliation, Abstract). We have 
+        classified the page layouts into nine types. These types are graphically 
+        represented in the sidebar and described below. </p>
+      <p>It is important to note we have not zoned or labeled any data that is 
+        not a title, author, affiliation or abstract. It is our hope that in the 
+        future other zoned data will be provided. The extracted data from MARS 
+        only includes the fields that were created by our automated processes.<br>
+      </p>
+      <table width="100%" border="0" cellpadding="5" cellspacing="5">
+        <tbody><tr> 
+          <td height="53" valign="top" width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type A</font></h2>
+          </td>
+          <td height="53"> 
+            <p><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+              article Title, Author(s), Affiliation and Abstract appearing in 
+              the defined order and are located in the upper half of the page. 
+              The lower portion could include the abstract or the beginning of 
+              the article text. Variations include: single column (as shown in 
+              sidebar); 2 single columns (large white space separating); single 
+              column, followed by double column (large white space separating 
+              single from double); single, double single column; and single, double, 
+              double column.</font></p>
+          </td>
+        </tr>
+        <tr> 
+          <td valign="top" width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type B</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+            Title, Author and Abstract are in the upper portion of the page. The 
+            Affiliation is located at the bottom.</font></td>
+        </tr>
+        <tr> 
+          <td valign="top" width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type C</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1"> 
+            The Title, Author and Abstract are in the upper half of the page. 
+            The Affiliation is single columned and located in the left column 
+            of double column text. Variations include: a body of text below the 
+            double column Affiliation area that is other data. That is, data MEDLINE 
+            does not record and isn't classified.</font></td>
+        </tr>
+        <tr> 
+          <td valign="top" width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type D</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+            Title, Author, and Affiliation are in the upper half of the page. 
+            The Abstract usually is all or some of the first column. Variations 
+            include the Abstract continuing into a portion of column 2.</font></td>
+        </tr>
+        <tr> 
+          <td width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type E</font></h2>
+          </td>
+          <td width="90%"> 
+            <p><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+              Title, Author, and Affiliation is in the upper half of the page. 
+              The Abstract is double columned, but above the body text of the 
+              article in most cases.</font></p>
+          </td>
+        </tr>
+        <tr> 
+          <td width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type F</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+            Title and Author are in the upper half of the page. The Affiliation 
+            is along the bottom. The Abstract usually is all or some of the first 
+            column. Variations include the abstract continuing into a portion 
+            of column 2.</font></td>
+        </tr>
+        <tr> 
+          <td width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type G</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+            Title and Author are in the upper half of the page. The Affiliation 
+            is along the bottom-left. The Abstract usually is all or some of the 
+            first column. Variations include the Abstract continuing into a portion 
+            of column 2.</font></td>
+        </tr>
+        <tr> 
+          <td width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type H</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1">The 
+            Title and Author are in the upper half of the page. The Affiliation 
+            is along the bottom. The Abstract is double columned, but above the 
+            body text of the article in most cases.</font></td>
+        </tr>
+        <tr> 
+          <td width="10%"> 
+            <h2><font face="Times New Roman, Times, serif">Type Other</font></h2>
+          </td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1">This 
+            category holds all unusual article layouts encountered. There are 
+            quite a few (about 25% of the NLM collection) that fall into this 
+            category and have not been categorized as of yet. This area has little 
+            internal research done and would be a great area to improve upon. 
+            </font></td>
+        </tr>
+        <tr> 
+          <td width="10%"><font face="Times New Roman, Times, serif"></font></td>
+          <td width="90%"><font face="Georgia, Times New Roman, Times, serif" size="1"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/gtintro.asp">Introduction</a> 
+            <img src="Layout%20Types_files/ball.gif" height="17" width="15"> <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/allgtfiles.asp">Download 
+            All</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"> 
+            <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_a.asp">Type A</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_b.asp">Type 
+            B</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"> 
+            <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_c.asp">Type C</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"> 
+            <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_d.asp">Type D</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"> 
+            <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_e.asp">Type E</a> </font></td>
+        </tr>
+        <tr> 
+          <td height="24" width="10%">&nbsp;</td>
+          <td height="24" width="90%"> 
+            <p align="left"><font size="2"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_f.asp"><font face="Georgia, Times New Roman, Times, serif" size="1">Type 
+              F</font></a> <font face="Georgia, Times New Roman, Times, serif" size="1"><img src="Layout%20Types_files/ball.gif" height="17" width="15"> 
+              <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_g.asp">Type G</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"> 
+              <a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_h.asp">Type H</a> <img src="Layout%20Types_files/ball.gif" height="17" width="15"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_other.asp">Type 
+              Other</a> </font></font></p>
+          </td>
+        </tr>
+        <tr> 
+          <td height="24" width="10%">NOTE</td>
+          <td height="24" width="90%">All Layout Types have been groundtruthed 
+            at the ZONE level, including Label Tags. Line, Word, and Character 
+            level information are still being worked on.</td>
+        </tr>
+        <tr>
+          <td height="33" width="10%">&nbsp;</td>
+          <td height="33" width="90%"> 
+            <p><font face="Georgia, Times New Roman, Times, serif" size="1"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/assets/images/distribution.gif">Chart 
+              with a distribution of thepage layouts in 3,337 journals. </a></font></p>
+            <p>&nbsp;</p>
+          </td>
+        </tr>
+      </tbody></table>
+      <!-- #EndEditable --> 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <hr>
+      <p align="center"><a href="https://web.archive.org/web/20130213212803/http://www.nlm.nih.gov/"><font size="1">U.S. National 
+        Library of Medicine, 8600 Rockville Pike, Bethesda, MD 20894</font></a><font size="1"><br>
+        <a href="https://web.archive.org/web/20130213212803/http://www.nih.gov/">National Institutes of Health</a> | <a href="https://web.archive.org/web/20130213212803/http://www.dhhs.gov/">U.S. 
+        Dept. of Health and Human Services</a><br>
+        <a href="https://web.archive.org/web/20130213212803/http://www.nlm.nih.gov/copyright.html">Copyright information</a> 
+        | <a href="https://web.archive.org/web/20130213212803/http://www.nlm.nih.gov/privacy.html">Privacy policy</a> | <a href="https://web.archive.org/web/20130213212803/http://www.nlm.nih.gov/accessibility.html">NLM 
+        Accessibility</a></font></p>
+      <p></p>
+    </td>
+    <td height="2" width="2" bgcolor="#666666"><img src="Layout%20Types_files/shim.gif" height="12" width="2"></td>
+    <td class="sidebartable" height="2" valign="top" width="200"><!-- #BeginEditable "sidebar" --> 
+      <h2>Visual Definitions</h2>
+      <table width="100%" border="0" cellpadding="4" cellspacing="0">
+        <tbody><tr> 
+          <td height="88" valign="middle" width="24%"> 
+            <div align="center"><font size="2">Legend </font></div>
+          </td>
+          <td height="88" valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td height="88" width="48%"><img src="Layout%20Types_files/legend.gif" height="110" width="80"></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type A</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_a.asp"><img src="Layout%20Types_files/type10000.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type B</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_b.asp"><img src="Layout%20Types_files/type10006.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type C</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_c.asp"><img src="Layout%20Types_files/type10007.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type D</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_d.asp"><img src="Layout%20Types_files/type12000.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type E</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_e.asp"><img src="Layout%20Types_files/type12200.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type F</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_f.asp"><img src="Layout%20Types_files/type12006.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type G</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_g.asp"><img src="Layout%20Types_files/type12007.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type H</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_h.asp"><img src="Layout%20Types_files/type12206.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td valign="middle" width="24%"> 
+            <div align="center"><font size="2">Type Other</font></div>
+          </td>
+          <td valign="middle" width="28%"> 
+            <div align="center"><font size="2"><img src="Layout%20Types_files/right.gif" height="16" width="20"></font></div>
+          </td>
+          <td width="48%"><a href="https://web.archive.org/web/20130213212803/http://marg.nlm.nih.gov/type_other.asp"><img src="Layout%20Types_files/typeother.gif" height="110" width="80" border="0"></a></td>
+        </tr>
+      </tbody></table>
+      <p>&nbsp;</p>
+      <!-- #EndEditable -->
+      <div align="center"></div>
+    </td>
+  </tr>
+</tbody></table>
+
+
+
+
+
+
+
+
+</body><!-- #EndTemplate --></html>
+<!--
+     FILE ARCHIVED ON 21:28:03 Feb 13, 2013 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 12:14:11 Apr 6, 2016.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
