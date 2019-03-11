@@ -58,30 +58,16 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 classifier = Sequential()
-classifier.add(Conv2D(32, (3, 3), input_shape=(50, 50, 1)))
-BatchNormalization(axis=-1)
-classifier.add(Activation('relu'))
-
-classifier.add(Conv2D(32, (3, 3)))
-BatchNormalization(axis=-1)
-classifier.add(Activation('relu'))
+classifier.add(Conv2D(32, (3, 3), input_shape=(50, 50, 1), activation='relu'))
+classifier.add(Dropout(0.1))
 classifier.add(MaxPool2D(pool_size=(2, 2)))
-BatchNormalization(axis=-1)
-classifier.add(Conv2D(64, (3, 3)))
-BatchNormalization(axis=-1)
-classifier.add(Activation('relu'))
-classifier.add(Conv2D(64, (3, 3)))
-classifier.add(Activation('relu'))
+classifier.add(Conv2D(64, (1, 1), activation='relu'))
+classifier.add(Dropout(0.1))
 classifier.add(MaxPool2D(pool_size=(2, 2)))
 classifier.add(Flatten())
-BatchNormalization()
-classifier.add(Dense(512))
-BatchNormalization()
-classifier.add(Activation('relu'))
-classifier.add(Dropout(0.2))
-classifier.add(Dense(3))
-classifier.add(Activation('softmax'))
-
+classifier.add(Dense(256, activation='sigmoid'))
+classifier.add(Dropout(0.5))
+classifier.add(Dense(3, activation='softmax'))
 classifier.compile(loss=keras.losses.categorical_crossentropy,
                    optimizer=keras.optimizers.Adam(),
                    metrics=['accuracy'])
@@ -98,9 +84,9 @@ test_gen = ImageDataGenerator()
 training_set = train_gen.flow(X_train, y_train, batch_size=64)
 test_set = train_gen.flow(X_test, y_test, batch_size=64)
 classifier.fit_generator(training_set,
-                         steps_per_epoch=60000//64,
+                         steps_per_epoch=X_train.shape[0]//64,
                          validation_data=test_set,
-                         validation_steps=10000//64,
+                         validation_steps=X_test.shape[0]//64,
                          epochs=1)
 
 pickle.dump(classifier, open("models/cnn_binary.sav", "wb"))
