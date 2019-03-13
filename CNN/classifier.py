@@ -18,17 +18,23 @@ STRIDE = 50
 THRESH = 200
 
 
-def classify(x):
-    imdb = io.imread_collection("*.png")
-    cnn_model = pickle.load(open("models/cnn_binary.sav", "rb"))
+def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
+    model = None
+    feature_extractor = pickle.load(open("models/feature_extractor.sav", "rb"))
+    feature_extractor.extract = feature_extractor.predict
+    if classifier == 'svm':
+        model = pickle.load(open("models/svm_cnn_features.sav", "rb"))
+    elif classifier == 'hmm':
+        raise Exception("HMM classifier not yet implemented.")
+    else:
+        raise Exception("Invalid model name.")
 
-    for im_index, image in enumerate(imdb):
-        image = io.imread("test.png")
+    for im_index, image in enumerate(img_collection):
         image = img_as_float(image)
         grouped_rectangles = preprocess(image)
         cvim = cv2.cvtColor(img_as_ubyte(image), cv2.COLOR_GRAY2RGB)
         step_v = 0
-        for i, (x, y, w, h) in enumerate(grouped_rectangles):
+        for (x, y, w, h) in grouped_rectangles:
             im = image[y:y+h, x:x+w]
             votes_printed = 0
             votes_hw = 0
@@ -43,14 +49,12 @@ def classify(x):
                     box = np.array(
                         im[step_v:step_v+STRIDE, step_h:step_h+STRIDE]).reshape(50, 50, 1)
                     box = box[np.newaxis, :]
-                    label = cnn_model.predict_classes(box)
+                    prediction = model.predict(feature_extractor.extract(box))
+                    label = prediction[0]
                     if label == 0:
                         votes_hw = votes_hw + 1
-                        #cv2.rectangle(cvim, (x+step_h, y+step_v), (x+step_h + 50, y+step_v + 50), (255,0,0,0.4),1,4)
-                        #io.imsave('pred_hw/'+str(i)+str(step_v)+str(step_h)+'.png', im[step_v:step_v+STRIDE, step_h:step_h+STRIDE])
                     if label == 1:
                         votes_printed = votes_printed + 1
-                        #cv2.rectangle(cvim, (x+step_h, y+step_v), (x+step_h + 50, y+step_v + 50), (0,200,0,0.4),1,4)
                     step_h = step_h + 30
                 if votes_hw > votes_printed:
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
@@ -59,9 +63,7 @@ def classify(x):
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
                                   (0, 255, 0), 2, 4)
 
-        io.imsave("res/form"+str(im_index)+".png", img_as_float(cvim))
-        exit()
-
-
+        io.imsave("res/res"+str(im_index)+"_"+classifier+"_"+".png", img_as_float(cvim))
+        print("saved image"+str(im_index)+"/"+str(len(img_collection)))
 if __name__ == "__main__":
-    classify(None)
+    classify(io.imread_collection("data/forms_test/*.png"))

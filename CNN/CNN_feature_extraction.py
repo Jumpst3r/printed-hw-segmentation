@@ -18,12 +18,12 @@ from sklearn.model_selection import train_test_split
 
 import cv2
 
-model = pickle.load(open("models/cnn_binary.sav", "rb"))
+model = pickle.load(open("models/cnn_simple.sav", "rb"))
 
 layer_name = 'flatten_1'
 extractor = Model(inputs=model.input,
                   outputs=model.get_layer(layer_name).output)
-
+pickle.dump(extractor, open("models/feature_extractor.sav", "wb"))
 
 X = []
 Y = []
