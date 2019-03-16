@@ -19,19 +19,12 @@ THRESH = 200
 
 
 def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
-    model = None
-    feature_extractor = pickle.load(open("models/feature_extractor.sav", "rb"))
-    feature_extractor.extract = feature_extractor.predict
-    if classifier == 'svm':
-        model = pickle.load(open("models/svm_cnn_features.sav", "rb"))
-    elif classifier == 'hmm':
-        raise Exception("HMM classifier not yet implemented.")
-    else:
-        raise Exception("Invalid model name.")
+    model = pickle.load(open("models/cnn_simple.sav", "rb"))
 
     for im_index, image in enumerate(img_collection):
         image = img_as_float(image)
-        grouped_rectangles = preprocess(image)
+        grouped_rectangles, bin_img = preprocess(image)
+        mask =cv2.cvtColor(bin_img, cv2.COLOR_GRAY2RGB)
         cvim = cv2.cvtColor(img_as_ubyte(image), cv2.COLOR_GRAY2RGB)
         step_v = 0
         for (x, y, w, h) in grouped_rectangles:
@@ -49,21 +42,25 @@ def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
                     box = np.array(
                         im[step_v:step_v+STRIDE, step_h:step_h+STRIDE]).reshape(50, 50, 1)
                     box = box[np.newaxis, :]
-                    prediction = model.predict(feature_extractor.extract(box))
-                    label = prediction[0]
+                    prediction = model.predict(box)
+                    label = prediction.argmax()
                     if label == 0:
                         votes_hw = votes_hw + 1
                     if label == 1:
                         votes_printed = votes_printed + 1
                     step_h = step_h + 30
                 if votes_hw > votes_printed:
+                    mask[y:y+h,x:x+w][np.where((mask[y:y+h,x:x+w] == [255,255,255]).all(axis = 2))] = [255,0,0]
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
                                   (255, 0, 0), 2, 4)
                 elif votes_hw < votes_printed:
+                    mask[y:y+h,x:x+w][np.where((mask[y:y+h,x:x+w] == [255,255,255]).all(axis = 2))] = [0,255,0]
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
                                   (0, 255, 0), 2, 4)
-
-        io.imsave("res/res"+str(im_index)+"_"+classifier+"_"+".png", img_as_float(cvim))
+        mask[np.where((mask == [0,0,0]).all(axis = 2))] = [0,0,255]
+        mask[np.where((mask == [255,255,255]).all(axis = 2))] = [0,0,255]
+        io.imsave("res/res_"+str(im_index)+"_"+classifier+"_"+".png", img_as_float(cvim))
+        io.imsave("training/mask_"+str(im_index)+"_"+classifier+"_"+".png", img_as_float(mask))
         print("saved image"+str(im_index)+"/"+str(len(img_collection)))
 if __name__ == "__main__":
     classify(io.imread_collection("data/forms_test/*.png"))
