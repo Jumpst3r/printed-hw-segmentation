@@ -19,8 +19,8 @@ THRESH = 200
 
 
 def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
-    model = pickle.load(open("models/cnn_simple.sav", "rb"))
-
+    model = pickle.load(open("models/try2.sav", "rb"))
+    print(model.summary())
     for im_index, image in enumerate(img_collection):
         image = img_as_float(image)
         grouped_rectangles, bin_img = preprocess(image)
@@ -53,6 +53,7 @@ def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
                     mask[y:y+h,x:x+w][np.where((mask[y:y+h,x:x+w] == [255,255,255]).all(axis = 2))] = [255,0,0]
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
                                   (255, 0, 0), 2, 4)
+                    io.imsave('pred/pred'+str(y+y+h+x+x+w)+'.png', im[step_v:step_v+STRIDE, step_h:step_h+STRIDE])
                 elif votes_hw < votes_printed:
                     mask[y:y+h,x:x+w][np.where((mask[y:y+h,x:x+w] == [255,255,255]).all(axis = 2))] = [0,255,0]
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),

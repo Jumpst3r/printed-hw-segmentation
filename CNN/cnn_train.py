@@ -58,16 +58,16 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 
 classifier = Sequential()
-classifier.add(Conv2D(16, kernel_size=(3, 3), strides=2, input_shape=(50, 50, 1), activation='relu'))
-classifier.add(Dropout(0.1))
+classifier.add(Conv2D(32, (3, 3), input_shape=(50, 50, 1), activation='relu'))
 classifier.add(MaxPool2D(pool_size=(2, 2)))
-classifier.add(Conv2D(32, kernel_size=(1, 1), strides=2, activation='relu'))
-classifier.add(Dropout(0.2))
+classifier.add(Conv2D(64, (3, 3), activation='relu'))
 classifier.add(MaxPool2D(pool_size=(2, 2)))
 classifier.add(Flatten())
-classifier.add(Dense(250, activation='sigmoid'))
-classifier.add(Dropout(0.5))
-classifier.add(Dense(3, activation='softmax'))
+classifier.add(Dense(512, activation='relu'))
+classifier.add(Dropout(0.2))
+classifier.add(Dense(3))
+classifier.add(Activation('softmax'))
+
 classifier.compile(loss=keras.losses.categorical_crossentropy,
                    optimizer=keras.optimizers.Adam(),
                    metrics=['accuracy'])
@@ -87,7 +87,7 @@ history = classifier.fit_generator(training_set,
                          steps_per_epoch=X_train.shape[0]//64,
                          validation_data=test_set,
                          validation_steps=X_test.shape[0]//64,
-                         epochs=5)
+                         epochs=1)
 
 
 # Plot statistics:
@@ -112,4 +112,4 @@ plt.show()
 
 # End statistics plot
 '''
-pickle.dump(classifier, open("models/cnn_binary.sav", "wb"))
+pickle.dump(classifier, open("models/try2.sav", "wb"))
