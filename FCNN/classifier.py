@@ -1,4 +1,6 @@
 import pickle
+import sys
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,12 +16,14 @@ from sklearn.svm import SVC
 import cv2
 from preprocessing import preprocess
 
+if not sys.warnoptions:
+    warnings.simplefilter("ignore")
 STRIDE = 50
 THRESH = 200
 
 
 def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
-    model = pickle.load(open("models/try2.sav", "rb"))
+    model = pickle.load(open("models/cnn.modelsav", "rb"))
     print(model.summary())
     for im_index, image in enumerate(img_collection):
         image = img_as_float(image)
@@ -28,7 +32,7 @@ def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
         cvim = cv2.cvtColor(img_as_ubyte(image), cv2.COLOR_GRAY2RGB)
         step_v = 0
         for (x, y, w, h) in grouped_rectangles:
-            im = image[y:y+h, x:x+w]
+            im = img_as_float(image[y:y+h, x:x+w])
             votes_printed = 0
             votes_hw = 0
             if im.shape[0] < STRIDE:
@@ -48,12 +52,12 @@ def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
                         votes_hw = votes_hw + 1
                     if label == 1:
                         votes_printed = votes_printed + 1
+                        
                     step_h = step_h + 30
                 if votes_hw > votes_printed:
                     mask[y:y+h,x:x+w][np.where((mask[y:y+h,x:x+w] == [255,255,255]).all(axis = 2))] = [255,0,0]
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
                                   (255, 0, 0), 2, 4)
-                    io.imsave('pred/pred'+str(y+y+h+x+x+w)+'.png', im[step_v:step_v+STRIDE, step_h:step_h+STRIDE])
                 elif votes_hw < votes_printed:
                     mask[y:y+h,x:x+w][np.where((mask[y:y+h,x:x+w] == [255,255,255]).all(axis = 2))] = [0,255,0]
                     cv2.rectangle(cvim, (x, y), (x + w, y + h),
@@ -64,4 +68,4 @@ def classify(img_collection: io.ImageCollection, classifier: str = 'svm'):
         io.imsave("training/mask_"+str(im_index)+"_"+classifier+"_"+".png", img_as_float(mask))
         print("saved image"+str(im_index)+"/"+str(len(img_collection)))
 if __name__ == "__main__":
-    classify(io.imread_collection("data/forms_test/*.png"))
+    classify(io.imread_collection("data/forms/*.png"))

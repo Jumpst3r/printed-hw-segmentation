@@ -1,4 +1,6 @@
 import pickle
+import sys
+import warnings
 
 import keras
 import matplotlib as mpl
@@ -16,10 +18,13 @@ from sklearn.model_selection import train_test_split
 
 import cv2
 
+if not sys.warnoptions:
+    warnings.simplefilter("ignore")
+
 X = []
 Y = []
 
-'''print("Reading images...")
+print("Reading images...")
 hw_inputs = np.array(io.imread_collection("data/cnn_hw_50px/*.png"))
 hw_inputs =  hw_inputs[np.random.choice(hw_inputs.shape[0], 20000, replace=False)]
 
@@ -45,10 +50,10 @@ print("Done!")
 
 pickle.dump(X, open("models/featureMatrix.sav", "wb"))
 pickle.dump(Y, open("models/Yarray.sav", "wb"))
-print("Dumped arrays!")'''
+print("Dumped arrays!")
 
-X = pickle.load(open("models/featureMatrix.sav", "rb"))
-Y = pickle.load(open("models/Yarray.sav", "rb"))
+#X = pickle.load(open("models/featureMatrix.sav", "rb"))
+#Y = pickle.load(open("models/Yarray.sav", "rb"))
 
 Y = to_categorical(Y)
 X = X.reshape(X.shape[0], 50, 50, 1).astype("float32")
@@ -112,4 +117,4 @@ plt.show()
 
 # End statistics plot
 '''
-pickle.dump(classifier, open("models/try2.sav", "wb"))
+pickle.dump(classifier, open("models/cnn.modelsav", "wb"))
