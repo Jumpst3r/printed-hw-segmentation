@@ -48,6 +48,5 @@ def gen_patches(img_collection: io.ImageCollection, y_lo=645, y_up=2215, x_lim=2
                 io.imsave("fcn_outputs/"+str(x)+"("+str(y)+")"+str(im_index)+".png", bin_im[y:y+BOXWDITH,x:x+BOXWDITH])
                 io.imsave("fcn_inputs/"+str(x)+"("+str(y)+")"+str(im_index)+".png", image[y:y+BOXWDITH,x:x+BOXWDITH])
                 x = x + STRIDE
-        exit()
 if __name__ == "__main__":
     gen_patches(io.imread_collection("data/forms/*.png"))

@@ -1,4 +1,5 @@
 import os
+import pickle
 
 import keras.backend as K
 import matplotlib.pyplot as plt
@@ -137,30 +138,17 @@ def weighted_categorical_crossentropy(weights):
             raise ValueError('WeightedCategoricalCrossentropy: not valid with logits')
     return loss
 
-def give_color_to_seg_img(seg,n_classes):
-    '''
-    seg : (input_width,input_height,3)
-    '''
-    
-    if len(seg.shape)==3:
-        seg = seg[:,:,0]
-    seg_img = np.zeros( (seg.shape[0],seg.shape[1],3) ).astype('float')
-    colors = sns.color_palette("hls", n_classes)
-    
-    for c in range(n_classes):
-        segc = (seg == c)
-        seg_img[:,:,0] += (segc*( colors[c][0] ))
-        seg_img[:,:,1] += (segc*( colors[c][1] ))
-        seg_img[:,:,2] += (segc*( colors[c][2] ))
 
-    return(seg_img)
 
-model.compile(loss=weighted_categorical_crossentropy([0.1,1,0.01]),
+model.load_weights('models.hdf5')
+model.compile(loss=weighted_categorical_crossentropy([1,1,0.01]),
               optimizer='adam',
               metrics=[IoU])
-history = model.fit(X,Y, epochs=200, batch_size=1)
+checkpoint = [ModelCheckpoint(filepath='models.hdf5')]
 
-test = io.imread("fcn_inputs/test.png")
+history = model.fit(X,Y, epochs=10, batch_size=5, callbacks=checkpoint)
+
+test = io.imread("test.png")
 test = gray2rgb(test)
 test = (test - test.mean()) / test.std()
 
@@ -174,10 +162,6 @@ plt.show()
 
 im = np.round(im)
 
-plt.figure()
-plt.imshow(give_color_to_seg_img(im[0],3))
-plt.show()
-
 # Plot training & validation loss values
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
@@ -189,4 +173,4 @@ plt.show()
 
 # End statistics plot
 
-pickle.dump(classifier, open("models/fcn.modelsav", "wb"))
+pickle.dump(model, open("models/fcn.modelsav", "wb"))
