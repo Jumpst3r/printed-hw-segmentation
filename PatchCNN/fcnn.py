@@ -1,8 +1,16 @@
+import os
+
+import keras.backend as K
+import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 import skimage.io as io
+import tensorflow as tf
+from keras.callbacks import ModelCheckpoint
 from keras.layers import *
 from keras.models import *
 from skimage.color import gray2rgb
+from sklearn.metrics import classification_report
 
 X = io.imread_collection('fcn_inputs/*.png')
 Y = io.imread_collection('fcn_outputs/*.png')
@@ -11,72 +19,25 @@ X_in = []
 for im in X:
     X_in.append(gray2rgb(im))
 X = np.array(X_in)
+X = (X-X.mean())/X.std()
 Y = np.array(Y)
-print(X[0].shape)
+Y = Y / Y.max()
 
 def FCN8( nClasses ,  input_height=512, input_width=512):
-    ## input_height and width must be devisible by 32 because maxpooling with filter size = (2,2) is operated 5 times,
-    ## which makes the input_height and width 2^5 = 32 times smaller
-    assert input_height%32 == 0
-    assert input_width%32 == 0
     IMAGE_ORDERING =  "channels_last" 
 
     img_input = Input(shape=(input_height,input_width, 3)) ## Assume 224,224,3
     
-    ## Block 1
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv1', data_format=IMAGE_ORDERING )(img_input)
-    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block1_conv2', data_format=IMAGE_ORDERING )(x)
+    x = Conv2D(32, (3, 3), activation='relu', padding='same', name='block1_conv1', data_format=IMAGE_ORDERING )(img_input)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool', data_format=IMAGE_ORDERING )(x)
-    f1 = x
     
-    # Block 2
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv1', data_format=IMAGE_ORDERING )(x)
-    x = Conv2D(128, (3, 3), activation='relu', padding='same', name='block2_conv2', data_format=IMAGE_ORDERING )(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool', data_format=IMAGE_ORDERING )(x)
-    f2 = x
-
-    # Block 3
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv1', data_format=IMAGE_ORDERING )(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv2', data_format=IMAGE_ORDERING )(x)
-    x = Conv2D(256, (3, 3), activation='relu', padding='same', name='block3_conv3', data_format=IMAGE_ORDERING )(x)
+    x = Conv2D(64, (3, 3), activation='relu', padding='same', name='block3_conv3', data_format=IMAGE_ORDERING )(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool', data_format=IMAGE_ORDERING )(x)
-    pool3 = x
-
-    # Block 4
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv1', data_format=IMAGE_ORDERING )(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv2', data_format=IMAGE_ORDERING )(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block4_conv3', data_format=IMAGE_ORDERING )(x)
-    pool4 = MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool', data_format=IMAGE_ORDERING )(x)## (None, 14, 14, 512) 
-
-    # Block 5
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv1', data_format=IMAGE_ORDERING )(pool4)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv2', data_format=IMAGE_ORDERING )(x)
-    x = Conv2D(512, (3, 3), activation='relu', padding='same', name='block5_conv3', data_format=IMAGE_ORDERING )(x)
-    pool5 = MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool', data_format=IMAGE_ORDERING )(x)## (None, 7, 7, 512)
-
+       
+    conv7 = ( Conv2D( 3 , ( 1 , 1 ) , activation='relu' , padding='same', name="conv7", data_format=IMAGE_ORDERING))(x)
     
-    
-    
-    vgg  = Model(  img_input , pool5  )
-    vgg.load_weights("weights.h5") ## loading VGG weights for the encoder parts of FCN8
-    
-    n = 4096
-    o = ( Conv2D( n , ( 7 , 7 ) , activation='relu' , padding='same', name="conv6", data_format=IMAGE_ORDERING))(pool5)
-    conv7 = ( Conv2D( n , ( 1 , 1 ) , activation='relu' , padding='same', name="conv7", data_format=IMAGE_ORDERING))(o)
-    
-    
-    ## 4 times upsamping for pool4 layer
     conv7_4 = Conv2DTranspose( nClasses , kernel_size=(4,4) ,  strides=(4,4) , use_bias=False, data_format=IMAGE_ORDERING )(conv7)
-    ## (None, 224, 224, 10)
-    ## 2 times upsampling for pool411
-    pool411 = ( Conv2D( nClasses , ( 1 , 1 ) , activation='relu' , padding='same', name="pool4_11", data_format=IMAGE_ORDERING))(pool4)
-    pool411_2 = (Conv2DTranspose( nClasses , kernel_size=(2,2) ,  strides=(2,2) , use_bias=False, data_format=IMAGE_ORDERING ))(pool411)
-    
-    pool311 = ( Conv2D( nClasses , ( 1 , 1 ) , activation='relu' , padding='same', name="pool3_11", data_format=IMAGE_ORDERING))(pool3)
-        
-    o = Add(name="add")([pool411_2, pool311, conv7_4 ])
-    o = Conv2DTranspose( nClasses , kernel_size=(8,8) ,  strides=(8,8) , use_bias=False, data_format=IMAGE_ORDERING )(o)
-    o = (Activation('softmax'))(o)
+    o = (Activation('softmax'))(conv7_4)
     
     model = Model(img_input, o)
 
@@ -86,7 +47,146 @@ model = FCN8(nClasses     = 3,
              input_height = 512, 
              input_width  = 512)
 model.summary()
-model.compile(loss='categorical_crossentropy',
+'''
+model_name_save = 'models.hdf5'
+checkpoint = [ModelCheckpoint(filepath=model_name_save)]
+
+if os.path.isfile(model_name_save):
+    print ("Resumed model's weights from {}".format(model_name_save))
+    # load weights
+    model.load_weights(model_name_save)
+'''
+
+
+######################################## IoU metric ############################################
+
+def castF(x):
+    return K.cast(x, K.floatx())
+
+def castB(x):
+    return K.cast(x, bool)
+
+def iou_loss_core(true,pred):  #this can be used as a loss if you make it negative
+    intersection = true * pred
+    notTrue = 1 - true
+    union = true + (notTrue * pred)
+
+    return (K.sum(intersection, axis=-1) + K.epsilon()) / (K.sum(union, axis=-1) + K.epsilon())
+
+def IoU(true, pred): #any shape can go - can't be a loss function
+
+    tresholds = [0.5 + (i*.05)  for i in range(10)]
+
+    #flattened images (batch, pixels)
+    true = K.batch_flatten(true)
+    pred = K.batch_flatten(pred)
+    pred = castF(K.greater(pred, 0.5))
+
+    #total white pixels - (batch,)
+    trueSum = K.sum(true, axis=-1)
+    predSum = K.sum(pred, axis=-1)
+
+    #has mask or not per image - (batch,)
+    true1 = castF(K.greater(trueSum, 1))    
+    pred1 = castF(K.greater(predSum, 1))
+
+    #to get images that have mask in both true and pred
+    truePositiveMask = castB(true1 * pred1)
+
+    #separating only the possible true positives to check iou
+    testTrue = tf.boolean_mask(true, truePositiveMask)
+    testPred = tf.boolean_mask(pred, truePositiveMask)
+
+    #getting iou and threshold comparisons
+    iou = iou_loss_core(testTrue,testPred) 
+    truePositives = [castF(K.greater(iou, tres)) for tres in tresholds]
+
+    #mean of thressholds for true positives and total sum
+    truePositives = K.mean(K.stack(truePositives, axis=-1), axis=-1)
+    truePositives = K.sum(truePositives)
+
+    #to get images that don't have mask in both true and pred
+    trueNegatives = (1-true1) * (1 - pred1) # = 1 -true1 - pred1 + true1*pred1
+    trueNegatives = K.sum(trueNegatives) 
+
+    return (truePositives + trueNegatives) / castF(K.shape(true)[0])
+
+########################################################################################################################
+
+def weighted_categorical_crossentropy(weights):
+    """ weighted_categorical_crossentropy
+
+        Args:
+            * weights<ktensor|nparray|list>: crossentropy weights
+        Returns:
+            * weighted categorical crossentropy function
+    """
+    if isinstance(weights,list) or isinstance(np.ndarray):
+        weights=K.variable(weights)
+
+    def loss(target,output,from_logits=False):
+        if not from_logits:
+            output /= tf.reduce_sum(output,
+                                    len(output.get_shape()) - 1,
+                                    True)
+            _epsilon = tf.convert_to_tensor(K.epsilon(), dtype=output.dtype.base_dtype)
+            output = tf.clip_by_value(output, _epsilon, 1. - _epsilon)
+            weighted_losses = target * tf.log(output) * weights
+            return - tf.reduce_sum(weighted_losses,len(output.get_shape()) - 1)
+        else:
+            raise ValueError('WeightedCategoricalCrossentropy: not valid with logits')
+    return loss
+
+def give_color_to_seg_img(seg,n_classes):
+    '''
+    seg : (input_width,input_height,3)
+    '''
+    
+    if len(seg.shape)==3:
+        seg = seg[:,:,0]
+    seg_img = np.zeros( (seg.shape[0],seg.shape[1],3) ).astype('float')
+    colors = sns.color_palette("hls", n_classes)
+    
+    for c in range(n_classes):
+        segc = (seg == c)
+        seg_img[:,:,0] += (segc*( colors[c][0] ))
+        seg_img[:,:,1] += (segc*( colors[c][1] ))
+        seg_img[:,:,2] += (segc*( colors[c][2] ))
+
+    return(seg_img)
+
+model.compile(loss=weighted_categorical_crossentropy([0.1,1,0.01]),
               optimizer='adam',
-              metrics=['accuracy'])
-model.fit(X,Y, epochs=2, batch_size=1)
+              metrics=[IoU])
+history = model.fit(X,Y, epochs=200, batch_size=1)
+
+test = io.imread("fcn_inputs/test.png")
+test = gray2rgb(test)
+test = (test - test.mean()) / test.std()
+
+
+im = model.predict(np.array([test]))
+
+
+plt.figure()
+plt.imshow(im[0])
+plt.show()
+
+im = np.round(im)
+
+plt.figure()
+plt.imshow(give_color_to_seg_img(im[0],3))
+plt.show()
+
+# Plot training & validation loss values
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
+
+# End statistics plot
+
+pickle.dump(classifier, open("models/fcn.modelsav", "wb"))

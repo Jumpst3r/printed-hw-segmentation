@@ -27,7 +27,7 @@ BOXWDITH = 512
 STRIDE = 300
 THRESH = 200
 
-def gen_patches(img_collection: io.ImageCollection, y_lo=170, y_up=2215, x_lim=20):
+def gen_patches(img_collection: io.ImageCollection, y_lo=645, y_up=2215, x_lim=20):
     nb_im_printed = 0
     nb_im_hw = 0
     nb_im_noise = 0
@@ -36,17 +36,15 @@ def gen_patches(img_collection: io.ImageCollection, y_lo=170, y_up=2215, x_lim=2
         image = img_as_float(image)[:,x_lim:]
         bin_im = getbinim(image)
         bin_im = gray2rgb(bin_im)
+        bin_im[0:y_lo,:][np.where((bin_im[0:y_lo,:] == [1,1,1]).all(axis = 2))] = [1,0,0]
+        bin_im[y_lo:y_up,:][np.where((bin_im[y_lo:y_up,:] == [1,1,1]).all(axis = 2))] = [0,1,0]
+        bin_im[:,:][np.where((bin_im[:,:] == [0,0,0]).all(axis = 2))] = [0,0,1]
+
         for y in tqdm(range(0, y_up, STRIDE), unit="y_pixel"):
             x = x_lim
             if (y + BOXWDITH > y_up):
                 break
             while (x + BOXWDITH) < image.shape[1]:
-                if y_lo < y < y_up:
-                    bin_im[y:y+BOXWDITH,x:x+BOXWDITH][np.where((bin_im[y:y+BOXWDITH,x:x+BOXWDITH] == [1,1,1]).all(axis = 2))] = [1,0,0]
-                # printed
-                if y < y_lo:
-                    bin_im[y:y+BOXWDITH,x:x+BOXWDITH][np.where((bin_im[y:y+BOXWDITH,x:x+BOXWDITH] == [1,1,1]).all(axis = 2))] = [0,1,0]
-                bin_im[y:y+BOXWDITH,x:x+BOXWDITH][np.where((bin_im[y:y+BOXWDITH,x:x+BOXWDITH] == [0,0,0]).all(axis = 2))] = [0,0,1]
                 io.imsave("fcn_outputs/"+str(x)+"("+str(y)+")"+str(im_index)+".png", bin_im[y:y+BOXWDITH,x:x+BOXWDITH])
                 io.imsave("fcn_inputs/"+str(x)+"("+str(y)+")"+str(im_index)+".png", image[y:y+BOXWDITH,x:x+BOXWDITH])
                 x = x + STRIDE
