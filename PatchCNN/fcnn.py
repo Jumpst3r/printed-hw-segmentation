@@ -14,7 +14,7 @@ from skimage import filters, img_as_float, img_as_ubyte
 from skimage.color import gray2rgb
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-
+from classifier_fcnn import classify
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
@@ -23,42 +23,43 @@ def normalize(im):
     return im / 255.
 
 
-'''
-image_datagen = ImageDataGenerator(
-    samplewise_center=True, samplewise_std_normalization=True)
-mask_datagen = ImageDataGenerator(preprocessing_function=normalize)
 
-image_generator = image_datagen.flow_from_directory(
-    'fcn_im_in', target_size=(512, 512), class_mode=None, batch_size=10)
+image_datagen_train = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True,rotation_range=5,
+        zoom_range=0.2,
+        fill_mode='nearest',
+        width_shift_range=0.2,
+        height_shift_range=0.2)
+mask_datagen_train = ImageDataGenerator(preprocessing_function=normalize, rotation_range=5,
+        zoom_range=0.2,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        fill_mode='nearest')
 
-mask_generator = mask_datagen.flow_from_directory(
-    'fcn_masks',
+image_generator_train = image_datagen_train.flow_from_directory(
+    'fcn_im_in_train', target_size=(512, 512), class_mode=None, batch_size=10, seed=123, shuffle=True)
+
+mask_generator_train = mask_datagen_train.flow_from_directory(
+    'fcn_masks_train',
     class_mode=None,
     target_size=(512, 512),
-    batch_size=10)
+    batch_size=10, seed=123, shuffle=True)
+
+image_datagen_valid = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True)
+mask_datagen_valid = ImageDataGenerator(preprocessing_function=normalize)
+
+image_generator_valid = image_datagen_valid.flow_from_directory(
+    'fcn_im_in_valid', target_size=(512, 512), class_mode=None, batch_size=10, seed=123, shuffle=True)
+
+mask_generator_valid = mask_datagen_valid.flow_from_directory(
+    'fcn_masks_valid',
+    class_mode=None,
+    target_size=(512, 512),
+    batch_size=10, seed=123, shuffle=True)
 
 # combine generators into one which yields image and masks
-train_generator = zip(image_generator, mask_generator)
-'''
+train_generator = zip(image_generator_train, mask_generator_train)
 
-X = []
-Y = []
-
-indb = io.imread_collection('fcn_im_in/fcn_inputs/*.png')
-outdb = io.imread_collection('fcn_masks/fcn_outputs/*.png')
-
-for im in indb:
-    X.append(im)
-
-for im in outdb:
-    Y.append(im)
-
-X_train = np.array(X, dtype=float)
-Y_train = np.array(Y, dtype=float)
-Y_train /= Y_train.max()
-X_train -= X_train.mean()
-X_train /= X_train.std()
-
+valid_generator = zip(image_generator_valid, mask_generator_valid)
 
 def FCN8(nClasses,  input_height=512, input_width=512):
     IMAGE_ORDERING = "channels_last"
@@ -91,7 +92,7 @@ model = FCN8(nClasses=3,
              input_height=512,
              input_width=512)
 model.summary()
-'''
+
 model_name_save = 'models.hdf5'
 checkpoint = [ModelCheckpoint(filepath=model_name_save)]
 
@@ -99,7 +100,7 @@ if os.path.isfile(model_name_save):
     print ("Resumed model's weights from {}".format(model_name_save))
     # load weights
     model.load_weights(model_name_save)
-'''
+
 
 
 ######################################## IoU metric ############################################
@@ -201,30 +202,12 @@ if os.path.isfile('models.hdf5'):
     model.load_weights('models.hdf5')
 '''
 
-
-class prediction_history(Callback):
-    def __init__(self):
-        self.predhis = []
-
-    def on_epoch_end(self, epoch, logs={}):
-        test = io.imread("test.png")
-        test = gray2rgb(test)
-        test = (test - test.mean()) / test.std()
-        io.imsave("hist/"+str(epoch)+".png",
-                  model.predict(np.array([test]))[0])
-
-
-predHist = prediction_history()
-earlystop = EarlyStopping(monitor='IoU', min_delta=0.1, patience=10,
-                          verbose=0, mode='auto', baseline=None, restore_best_weights=True)
-
-model.compile(loss=[weighted_categorical_crossentropy([1, 1, 0.03])],
+model.compile(loss=[weighted_categorical_crossentropy([1, 0.8, 0.01])],
               optimizer='adam',
               metrics=[IoU])
 checkpoint = [ModelCheckpoint(filepath='models.hdf5')]
 
-history = model.fit(X_train, Y_train, epochs=100,
-                    batch_size=32, callbacks=[predHist])
+history = model.fit_generator(train_generator, epochs=300, steps_per_epoch=100, callbacks=checkpoint, validation_data=valid_generator, validation_steps=10)
 
 test = io.imread("test.png")
 test = gray2rgb(test)
@@ -235,4 +218,4 @@ im = model.predict(np.array([test]))[0]
 
 io.imsave("FCNRES.png", im)
 
-pickle.dump(model, open("models/fcn.modelsav", "wb"))
+model.save('fcnn.h5')
