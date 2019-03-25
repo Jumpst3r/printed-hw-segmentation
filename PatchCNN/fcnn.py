@@ -14,13 +14,16 @@ from skimage import filters, img_as_float, img_as_ubyte
 from skimage.color import gray2rgb
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
+
 from classifier_fcnn import classify
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 
 
 def normalize(im):
     return im / 255.
+    
 
 
 
@@ -207,7 +210,7 @@ model.compile(loss=[weighted_categorical_crossentropy([1, 0.8, 0.01])],
               metrics=[IoU])
 checkpoint = [ModelCheckpoint(filepath='models.hdf5')]
 
-history = model.fit_generator(train_generator, epochs=300, steps_per_epoch=100, callbacks=checkpoint, validation_data=valid_generator, validation_steps=10)
+history = model.fit_generator(train_generator, epochs=10, steps_per_epoch=100, callbacks=checkpoint, validation_data=valid_generator, validation_steps=10)
 
 test = io.imread("test.png")
 test = gray2rgb(test)
