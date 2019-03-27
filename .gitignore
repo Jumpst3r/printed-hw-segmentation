@@ -3,6 +3,7 @@
 *.pyc
 *.sav
 *.zip
+*.7z
 *._.DS_Store
 *.xml
 *.tif
