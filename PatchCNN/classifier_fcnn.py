@@ -1,18 +1,13 @@
-import skimage.io as io
 import sys
 import warnings
+
 import matplotlib.pyplot as plt
-
-
-import cv2
+import skimage.io as io
 from keras.engine.saving import load_model
-from scipy import ndimage
-from skimage.color import rgb2gray
-from skimage.filters import threshold_sauvola
 
 from fcn_helper_function import *
-from post_processing import *
 from img_utils import *
+from post_processing import *
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
@@ -54,10 +49,12 @@ def classify(image):
     pred = max_rgb_filter(mask2[0:image.shape[0], 0:image.shape[1]])
     pred = np.array(pred, dtype=int)
     raw_pred = np.copy(pred)
+    print(mask2[0:image.shape[0], 0:image.shape[1]])
     io.imsave('pred.png', mask2[0:image.shape[0], 0:image.shape[1]])
     # apply CRF to handwritten / printed channels independently
-    crf_printed = crf(image, pred[:, :, 0])
-    crf_hw = crf(image, pred[:, :, 1])
+    print(pred[:, :, 0].shape)
+    crf_printed = crf(image, convert(pred[:, :, 0]))
+    crf_hw = crf(image, convert(pred[:, :, 1]))
     # combine both CRF results
     pred[:, :, 0] = crf_printed[:, :, 0]
     pred[:, :, 1] = crf_hw[:, :, 1]
