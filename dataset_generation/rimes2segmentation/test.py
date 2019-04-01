@@ -26,14 +26,14 @@ def xml2segmentation(image, ground_truth, name):
     :param xml: input xml file name
     :return: pixel-wise annotated image
     """
-
+    orgim = np.copy(image)
     image = gray2rgb(getbinim(image))
 
     mask = image
     try:
         doc = xmltodict.parse(ground_truth.read())
     except ExpatError:
-        print('XML file malformated: ' + name + '.xml' + 'skipping..')
+        print('XML file malformated: ' + name + '.xml' + ' skipping..')
         return
 
     bboxes = doc['annotation']['box']
@@ -56,6 +56,7 @@ def xml2segmentation(image, ground_truth, name):
         (image[:, :] == [1, 1, 1]).all(axis=2))] = [0, 0, 1]
 
     io.imsave(IM_OUT_PATH + name + '.png', mask)
+    io.imsave('data/input' + name + '.png', orgim)
 
 
 if __name__ == '__main__':
