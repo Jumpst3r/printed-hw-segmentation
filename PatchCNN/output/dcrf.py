@@ -4,10 +4,7 @@
 import numpy as np
 import pydensecrf.densecrf as dcrf
 from pydensecrf.utils import (unary_from_labels)
-from skimage import img_as_float, img_as_ubyte
 from skimage.color import gray2rgb
-import cv2
-from img_utils import *
 
 """
 Function which returns the labelled image after applying CRF
@@ -59,7 +56,7 @@ def crf(original_image, annotated_image, use_2d=True):
                                kernel=dcrf.DIAG_KERNEL,
                                normalization=dcrf.NORMALIZE_SYMMETRIC)
 
-    Q = d.inference(2)
+    Q = d.inference(3)
 
     # Find out the most probable class for each pixel.
     MAP = np.argmax(Q, axis=0)
@@ -68,45 +65,3 @@ def crf(original_image, annotated_image, use_2d=True):
     # Note that there is no "unknown" here anymore, no matter what we had at first.
     MAP = colorize[MAP, :]
     return MAP.reshape(original_image.shape)
-
-
-def max_rgb_filter(image):
-    image = image[:, :, ::-1]
-    image = img_as_ubyte(image)
-    # split the image into its BGR components
-    (B, G, R) = cv2.split(image)
-    # find the maximum pixel intensity values for each
-    # (x, y)-coordinate,, then set all pixel values less
-    # than M to zero
-    M = np.maximum(np.maximum(R, G), B)
-    R[R < M] = 0
-    G[G < M] = 0
-    B[B < M] = 0
-
-    # merge the channels back together and return the image
-    image = cv2.merge([B, G, R])
-    image = img_as_float(image)
-    image = image[:, :, ::-1]
-    return np.array(np.ceil(image), dtype=int)
-
-def remove_lines(image):
-        gray = img_as_ubyte(image)
-        edges = cv2.Canny(gray, 50, 150, apertureSize=3)
-        cv2.imwrite('edges-50-150.jpg', edges)
-        minLineLength = 100
-
-        lines = cv2.HoughLinesP(image=edges, rho=1, theta=np.pi / 180, threshold=100, lines=np.array([]),
-                                minLineLength=minLineLength, maxLineGap=10)
-        print("done")
-        a, b, c = lines.shape
-        for i in range(a):
-            x = lines[i][0][0] - lines[i][0][2]
-            y = lines[i][0][1] - lines[i][0][3]
-            if x != 0:
-                if abs(y / x) < 1:
-                    cv2.line(gray, (lines[i][0][0], lines[i][0][1]), (lines[i][0][2], lines[i][0][3]), (255, 255, 255),
-                             1, cv2.LINE_AA)
-
-        se = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-        gray = cv2.morphologyEx(gray, cv2.MORPH_CLOSE, se)
-        return getbinim(img_as_float(gray))
