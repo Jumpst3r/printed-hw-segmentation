@@ -41,6 +41,8 @@ def crf(original_image, annotated_image, use_2d=True):
 
     # Gives no of class labels in the annotated image
     n_labels = len(set(labels.flat))
+    if n_labels == 1:
+        return annotated_image
     # Setting up the CRF model
     if use_2d:
         d = dcrf.DenseCRF2D(original_image.shape[1], original_image.shape[0], n_labels)
@@ -85,9 +87,9 @@ def max_rgb_filter(image):
 
     # merge the channels back together and return the image
     image = cv2.merge([B, G, R])
-    image = img_as_float(image)
+
     image = image[:, :, ::-1]
-    return np.array(np.ceil(image), dtype=int)
+    return np.array(np.ceil(img_as_float(image)), dtype=int)
 
 def remove_lines(image):
         gray = img_as_ubyte(image)

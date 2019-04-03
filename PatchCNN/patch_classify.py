@@ -25,7 +25,7 @@ def classify(imdb):
         image = getbinim(image)
 
         model = load_model('models/fcnn_bin.h5', custom_objects={
-            'loss': weighted_categorical_crossentropy([1, 0.8, 0.01]), 'IoU': IoU})
+            'loss': weighted_categorical_crossentropy([1, 0.8, 0.05]), 'IoU': IoU})
         image = gray2rgb(image)
 
         im = model.predict(np.array([image]))[0]

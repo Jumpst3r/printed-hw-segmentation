@@ -11,19 +11,11 @@ from fcn_helper_function import *
 def normalize(im):
     return im / 255.
 
-data_root = "../data/"
+data_root = "data/"
 
 
-image_datagen_train = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True,rotation_range=5,
-        zoom_range=0.2,
-        fill_mode='nearest',
-        width_shift_range=0.2,
-        height_shift_range=0.2)
-mask_datagen_train = ImageDataGenerator(preprocessing_function=normalize, rotation_range=5,
-        zoom_range=0.2,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
-        fill_mode='nearest')
+image_datagen_train = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True)
+mask_datagen_train = ImageDataGenerator(preprocessing_function=normalize)
 
 image_generator_train = image_datagen_train.flow_from_directory(
     data_root+'fcn_im_in_train', target_size=(512, 512), class_mode=None, batch_size=5, seed=123, shuffle=True)
@@ -61,14 +53,21 @@ def FCN(nClasses,  input_height=512, input_width=512):
 
     x = Conv2D(32, (3, 3), activation='relu', padding='same',
                data_format=IMAGE_ORDERING)(img_input)
+    x = Conv2D(32, (3, 3), activation='relu',
+               padding='same', data_format=IMAGE_ORDERING)(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), data_format=IMAGE_ORDERING)(x)
+
     x = Conv2D(64, (3, 3), activation='relu',
                padding='same', data_format=IMAGE_ORDERING)(x)
+    x = Conv2D(64, (3, 3), activation='relu',
+               padding='same', data_format=IMAGE_ORDERING)(x)
+
     x = MaxPooling2D((2, 2), strides=(2, 2), data_format=IMAGE_ORDERING)(x)
 
     x = Conv2D(128, (3, 3), activation='relu',
                padding='same', data_format=IMAGE_ORDERING)(x)
-
-    x = MaxPooling2D((2, 2), strides=(2, 2), data_format=IMAGE_ORDERING)(x)
+    x = Conv2D(128, (3, 3), activation='relu',
+               padding='same', data_format=IMAGE_ORDERING)(x)
 
     x = (Conv2D(3, (1, 1), activation='relu',
                 padding='same', data_format=IMAGE_ORDERING))(x)
@@ -86,7 +85,6 @@ model = FCN(nClasses=3,
             input_height=512,
             input_width=512)
 model.summary()
-
 model.compile(loss=[weighted_categorical_crossentropy([1, 0.8, 0.01])],
               optimizer='adam',
               metrics=[IoU])
