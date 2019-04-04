@@ -11,7 +11,7 @@ from fcn_helper_function import *
 def normalize(im):
     return im / 255.
 
-data_root = "data/"
+data_root = "../../data/"
 
 
 image_datagen_train = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True)
@@ -26,24 +26,9 @@ mask_generator_train = mask_datagen_train.flow_from_directory(
     target_size=(512, 512),
     batch_size=5, seed=123, shuffle=True)
 
-image_datagen_valid = ImageDataGenerator(
-    samplewise_center=True, samplewise_std_normalization=True)
-mask_datagen_valid = ImageDataGenerator(preprocessing_function=normalize)
-
-image_generator_valid = image_datagen_valid.flow_from_directory(
-    data_root+'fcn_im_in_valid', target_size=(512, 512), class_mode=None, batch_size=5, seed=123, shuffle=True)
-
-mask_generator_valid = mask_datagen_valid.flow_from_directory(
-    data_root+'fcn_masks_valid',
-    class_mode=None,
-    target_size=(512, 512),
-    batch_size=5, seed=123, shuffle=True)
 
 # combine generators into one which yields image and masks
 train_generator = zip(image_generator_train, mask_generator_train)
-
-valid_generator = zip(image_generator_valid, mask_generator_valid)
-
 
 
 def FCN(nClasses,  input_height=512, input_width=512):
@@ -85,7 +70,7 @@ model = FCN(nClasses=3,
             input_height=512,
             input_width=512)
 model.summary()
-model.compile(loss=[weighted_categorical_crossentropy([1, 0.8, 0.01])],
+model.compile(loss=[weighted_categorical_crossentropy([1, 1, 0.01])],
               optimizer='adam',
               metrics=[IoU])
 

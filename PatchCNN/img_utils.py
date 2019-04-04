@@ -6,11 +6,9 @@ from skimage.color import rgb2gray, gray2rgb
 from skimage.filters import threshold_sauvola
 
 def getbinim(image):
-    if len(image.shape) == 3:
-        image = rgb2gray(image)
-    thresh_sauvola = threshold_sauvola(image, window_size=25)
+    img_denoised = ndimage.filters.median_filter(image, 3)
+    thresh_sauvola = threshold_sauvola(img_denoised, window_size=25)
     return img_as_float(image < thresh_sauvola)
-
 
 def convert(image):
     if len(image.shape) < 3:
