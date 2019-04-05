@@ -11,7 +11,7 @@ from img_utils import *
 
 """
 Function which returns the labelled image after applying CRF
-
+Author: https://github.com/lucasb-eyer/pydensecrf
 """
 
 
@@ -61,7 +61,7 @@ def crf(original_image, annotated_image, use_2d = True):
                            normalization=dcrf.NORMALIZE_SYMMETRIC)
 
     #Run Inference for 5 steps 
-    Q = d.inference(2)
+    Q = d.inference(1)
 
     # Find out the most probable class for each pixel.
     MAP = np.argmax(Q, axis=0)
@@ -72,6 +72,7 @@ def crf(original_image, annotated_image, use_2d = True):
     return MAP.reshape(original_image.shape)
 
 
+# adapted from https://www.pyimagesearch.com/2015/09/28/implementing-the-max-rgb-filter-in-opencv/
 def max_rgb_filter(image):
     image = image[:, :, ::-1]
     image = img_as_ubyte(image)
@@ -90,25 +91,3 @@ def max_rgb_filter(image):
     image = img_as_float(image)
     image = image[:, :, ::-1]
     return np.ceil(image)
-
-def remove_lines(image):
-        gray = img_as_ubyte(image)
-        edges = cv2.Canny(gray, 50, 150, apertureSize=3)
-        cv2.imwrite('edges-50-150.jpg', edges)
-        minLineLength = 100
-
-        lines = cv2.HoughLinesP(image=edges, rho=1, theta=np.pi / 180, threshold=100, lines=np.array([]),
-                                minLineLength=minLineLength, maxLineGap=10)
-        print("done")
-        a, b, c = lines.shape
-        for i in range(a):
-            x = lines[i][0][0] - lines[i][0][2]
-            y = lines[i][0][1] - lines[i][0][3]
-            if x != 0:
-                if abs(y / x) < 1:
-                    cv2.line(gray, (lines[i][0][0], lines[i][0][1]), (lines[i][0][2], lines[i][0][3]), (255, 255, 255),
-                             1, cv2.LINE_AA)
-
-        se = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-        gray = cv2.morphologyEx(gray, cv2.MORPH_CLOSE, se)
-        return getbinim(img_as_float(gray))

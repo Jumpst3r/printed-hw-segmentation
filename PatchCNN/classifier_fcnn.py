@@ -60,7 +60,7 @@ def classify(imgdb):
         axes[0].get_xaxis().set_visible(False)
         axes[0].get_yaxis().set_visible(False)
         axes[0].set_title('Original image')
-        axes[1].imshow(rgb2gray(crf_combined), cmap='Paired')
+        axes[1].imshow(rgb2gray(crf_combined), cmap='jet')
         axes[1].get_xaxis().set_visible(False)
         axes[1].get_yaxis().set_visible(False)
         axes[1].set_title('FCN+CRF combined result')
