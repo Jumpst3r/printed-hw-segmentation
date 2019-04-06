@@ -1,7 +1,7 @@
 from keras.layers import *
 from keras.models import *
 from keras.preprocessing.image import ImageDataGenerator
-
+import matplotlib.pyplot as plt
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
@@ -11,21 +11,20 @@ from fcn_helper_function import *
 def normalize(im):
     return im / 255.
 
-data_root = "../../data/"
+data_root = "../data/"
 
 
 image_datagen_train = ImageDataGenerator(samplewise_center=True, samplewise_std_normalization=True)
 mask_datagen_train = ImageDataGenerator(preprocessing_function=normalize)
 
 image_generator_train = image_datagen_train.flow_from_directory(
-    data_root+'fcn_im_in_train', target_size=(512, 512), class_mode=None, batch_size=5, seed=123, shuffle=True)
+    data_root+'fcn_im_in_train', target_size=(150, 150), class_mode=None, batch_size=10, seed=123, shuffle=True)
 
 mask_generator_train = mask_datagen_train.flow_from_directory(
     data_root+'fcn_masks_train',
     class_mode=None,
-    target_size=(512, 512),
-    batch_size=5, seed=123, shuffle=True)
-
+    target_size=(150, 150),
+    batch_size=10, seed=123, shuffle=True)
 
 # combine generators into one which yields image and masks
 train_generator = zip(image_generator_train, mask_generator_train)
@@ -67,8 +66,8 @@ def FCN(nClasses,  input_height=512, input_width=512):
 
 
 model = FCN(nClasses=3,
-            input_height=512,
-            input_width=512)
+            input_height=150,
+            input_width=150)
 model.summary()
 model.compile(loss=[weighted_categorical_crossentropy([1, 1, 0.01])],
               optimizer='adam',
