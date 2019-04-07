@@ -44,7 +44,6 @@ mask_generator_train = mask_datagen_train.flow_from_directory(
     target_size=(WIDTH, WIDTH),
     batch_size=20, seed=123, shuffle=True)
 
-
 # combine generators into one which yields image and masks
 train_generator = zip(image_generator_train, mask_generator_train)
 
