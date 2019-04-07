@@ -15,18 +15,12 @@ if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
 
-
-
-
-
 BOXWDITH = 512
-STRIDE = 512
-THRESH = 200
-
+STRIDE = BOXWDITH
 
 def classify(imgdb):
     model = load_model('models/fcnn_bin.h5', custom_objects={
-                        'loss': weighted_categorical_crossentropy([1, 0.8, 0.01]), 'IoU': IoU})
+                        'loss': weighted_categorical_crossentropy([1, 1, 0.1]), 'IoU': IoU})
     for i,image in tqdm(enumerate(imgdb), unit='image'): 
         orgim = np.copy(image)
         image = img_as_ubyte(getbinim(image))
@@ -56,7 +50,7 @@ def classify(imgdb):
         plt.tight_layout()
         plt.axis('off')
         fig, axes = plt.subplots(1, 2)
-        axes[0].imshow(rgb2gray(image), cmap='gray')
+        axes[0].imshow(pred, cmap='gray')
         axes[0].get_xaxis().set_visible(False)
         axes[0].get_yaxis().set_visible(False)
         axes[0].set_title('Original image')

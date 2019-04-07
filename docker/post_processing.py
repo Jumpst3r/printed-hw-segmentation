@@ -41,7 +41,6 @@ def crf(original_image, annotated_image, use_2d = True):
 
     #Gives no of class labels in the annotated image
     n_labels = len(set(labels.flat)) 
-    print("nb of labels: " + str(n_labels))
     #Setting up the CRF model
     if use_2d :
         d = dcrf.DenseCRF2D(original_image.shape[1], original_image.shape[0], n_labels)
