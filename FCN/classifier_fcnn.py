@@ -1,15 +1,18 @@
 import sys
 import warnings
-import os
+from multiprocessing import Pool
+
 import matplotlib.pyplot as plt
+import numpy as np
 import skimage.io as io
 from keras.engine.saving import load_model
-
-from fcn_helper_function import *
-from img_utils import *
-from post_processing import *
+from skimage import img_as_ubyte
+from skimage.color import rgb2gray, gray2rgb
 from tqdm import tqdm
 
+from fcn_helper_function import weighted_categorical_crossentropy, IoU
+from img_utils import convert, getbinim
+from post_processing import max_rgb_filter, crf
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
@@ -38,11 +41,13 @@ def classify(imgdb):
                 input = mask[y:y+BOXWDITH, x:x+BOXWDITH]
                 std = input.std if input.std != 0 else 1
                 mask2[y:y+BOXWDITH, x:x+BOXWDITH] = model.predict(
-                    np.array([(input - input.mean())/input.std()]))[0]
+                    np.array([(input - input.mean())/std]))[0]
                 x = x + STRIDE
         pred = max_rgb_filter(mask2[0:image.shape[0], 0:image.shape[1]])
-        crf_printed = crf(image,convert(pred[:,:,0]))
-        crf_hw = crf(image,convert(pred[:,:,1]))
+        p = Pool(2)
+        res_arr = p.starmap(crf, [(image,convert(pred[:,:,0])),(image,convert(pred[:,:,1]))])
+        crf_printed = res_arr[0]
+        crf_hw = res_arr[1]
         crf_combined = np.zeros((image.shape[0],image.shape[1],3))
         crf_combined[:,:,0] = rgb2gray(crf_printed)
         crf_combined[:,:,1] = rgb2gray(crf_hw)

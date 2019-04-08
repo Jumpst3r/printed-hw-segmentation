@@ -1,22 +1,19 @@
+import os
 import sys
 import warnings
-import os
+from multiprocessing import Pool
+
 import matplotlib.pyplot as plt
 import skimage.io as io
 from keras.engine.saving import load_model
+from tqdm import tqdm
 
 from fcn_helper_function import *
 from img_utils import *
 from post_processing import *
-from tqdm import tqdm
-
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
-
-
-
-
 
 
 BOXWDITH = 512
@@ -47,8 +44,10 @@ def classify(imgdb):
                     np.array([(input - input.mean())/input.std()]))[0]
                 x = x + STRIDE
         pred = max_rgb_filter(mask2[0:image.shape[0], 0:image.shape[1]])
-        crf_printed = crf(image,convert(pred[:,:,0]))
-        crf_hw = crf(image,convert(pred[:,:,1]))
+        p = Pool(2)
+        res_arr = p.starmap(crf, [(image,convert(pred[:,:,0])),(image,convert(pred[:,:,1]))])
+        crf_printed = res_arr[0]
+        crf_hw = res_arr[1]
         crf_combined = np.zeros((image.shape[0],image.shape[1],3))
         crf_combined[:,:,0] = rgb2gray(crf_printed)
         crf_combined[:,:,1] = rgb2gray(crf_hw)

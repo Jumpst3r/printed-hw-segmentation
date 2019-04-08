@@ -2,6 +2,8 @@ import sys
 import warnings
 import os
 import sys
+from multiprocessing.pool import Pool
+
 import skimage.io as io
 from keras.engine.saving import load_model
 
@@ -45,8 +47,10 @@ def classify(image_name, output_folder, use_postprocessing=False):
             x = x + STRIDE
     pred = max_rgb_filter(mask2[0:image.shape[0], 0:image.shape[1]])
     if(use_postprocessing):
-        crf_printed = crf(image,convert(pred[:,:,0]))
-        crf_hw = crf(image,convert(pred[:,:,1]))
+        p = Pool(2)
+        res_arr = p.starmap(crf, [(image, convert(pred[:, :, 0])), (image, convert(pred[:, :, 1]))])
+        crf_printed = res_arr[0]
+        crf_hw = res_arr[1]
         crf_combined = np.zeros((image.shape[0],image.shape[1],3))
         crf_combined[:,:,0] = rgb2gray(crf_printed)
         crf_combined[:,:,1] = rgb2gray(crf_hw)
@@ -56,7 +60,7 @@ def classify(image_name, output_folder, use_postprocessing=False):
             (pred[:, :] == [0, 0, 0]).all(axis=2))] = [0, 0, 1]
 
         pred = np.ceil(pred)
-    io.imsave(output_folder + 'output-' + now.strftime("%Y-%m-%d%H:%M") + '.png', pred)
+    io.imsave(output_folder + 'output.png', pred)
 
 
 if __name__ == "__main__":
