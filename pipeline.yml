@@ -19,10 +19,7 @@ steps:
     stage: 'test'
     image: jumpst3r/printed-hw-segmentation
     commands:
-      - cd /input/
-      - source activate productionDocker
-      - py.test
-
+      - /bin/bash -c "/opt/conda/bin/conda activate productionDocker && cd /input/ && py.test"
 
   PushingToDockerRegistry:
     type: push
