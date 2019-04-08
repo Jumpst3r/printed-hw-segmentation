@@ -1,16 +1,9 @@
 FROM continuumio/miniconda3
 LABEL maintainer="nicolas.dutly@unifr.ch"
 
-COPY ./script.sh /input/script.sh
-COPY ./printed-hw-seg.py /input/printed-hw-seg.py
-COPY ./fcn_helper_function.py /input/fcn_helper_function.py
-COPY ./fcnn_bin.h5 /input/fcnn_bin.h5
-COPY ./post_processing.py /input/post_processing.py
-COPY ./img_utils.py /input/img_utils.py
+COPY ./code/* /input/
 
-
-RUN apt-get update
-RUN apt-get install linux-headers-amd64 build-essential -y
+RUN apt-get update && apt-get install build-essential -y --no-install-recommends && rm -rf /var/lib/apt/lists/*
 COPY ./environment.yml /tmp/environment.yml
 RUN conda env create -f /tmp/environment.yml
 # Pull the environment name out of the environment.yml
