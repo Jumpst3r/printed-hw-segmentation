@@ -20,7 +20,7 @@ steps:
     image: jumpst3r/printed-hw-segmentation
     commands:
       - cd /input/
-      - conda activate productionDocker
+      - source activate productionDocker
       - py.test
 
 
