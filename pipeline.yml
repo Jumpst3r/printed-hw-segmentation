@@ -20,6 +20,7 @@ steps:
     image: jumpst3r/printed-hw-segmentation
     commands:
       - cd /input/
+      - source /opt/miniconda/bin/activate productionDocker
       - py.test
 
   PushingToDockerRegistry:
