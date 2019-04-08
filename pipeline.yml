@@ -29,6 +29,6 @@ steps:
     stage: 'deploy'
     title: Pushing To Dockerhub Registry
     candidate: jumpst3r/printed-hw-segmentation
-    tag: '${{CF_SHORT_REVISION}}'
+    tag: 'latest'
     image_name: jumpst3r/printed-hw-segmentation
     registry: dockerhub
