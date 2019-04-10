@@ -136,3 +136,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+docker/code/printed-hw-seg.bin
