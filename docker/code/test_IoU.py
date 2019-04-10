@@ -1,13 +1,14 @@
 import subprocess
-import skimage.io as io
+
 import numpy as np
 import pytest
+import skimage.io as io
 
 
 class Test:
 
     def test_runnable(self):
-        return_code = subprocess.call("sh script.sh input.png ./", shell=True)
+        return_code = subprocess.call("./printed-hw-seg.bin input.png ./", shell=True)
         assert return_code == 0, 'Launcher script or python runnable failed'
         print("Successfully ran python runnable")
 
