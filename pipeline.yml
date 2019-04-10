@@ -17,12 +17,14 @@ steps:
   TestRunnable:
     title: Running Tests
     stage: 'test'
-    image: jumpst3r/printed-hw-segmentation
+    image: jumpst3r/printed-hw-segmentation:production
     commands:
       - apt update && apt install python-pip python-setuptools python-dev build-essential --no-install-recommends -y
       - pip install wheel
       - pip install numpy scikit-image pytest
-      - cd /input/ 
+      - cd /input/
+      - pwd
+      - ls
       - py.test
 
   PushingToDockerRegistry:
