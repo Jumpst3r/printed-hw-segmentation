@@ -20,7 +20,9 @@ steps:
     image: jumpst3r/printed-hw-segmentation
     commands:
       - apt update && apt install python-pip python-setuptools python-dev build-essential --no-install-recommends -y
-      - pip install wheel numpy scikit-image pytest
+      - pip install wheel
+      - pip install numpy scikit-image pytest
+      - cd /input/ 
       - py.test
 
   PushingToDockerRegistry:
