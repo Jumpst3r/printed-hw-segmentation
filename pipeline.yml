@@ -11,14 +11,14 @@ steps:
     stage: 'build'
     image_name: jumpst3r/printed-hw-segmentation
     working_directory: ./docker/
-    tag: production1
+    tag: 'production1'
     dockerfile: Dockerfile
 
   TestRunnable:
     title: Running Tests
     stage: 'test'
     image: jumpst3r/printed-hw-segmentation
-    tag: production1
+    tag: 'production1'
     commands:
       - apt update && apt install python-pip python-setuptools python-dev build-essential --no-install-recommends -y
       - pip install wheel
