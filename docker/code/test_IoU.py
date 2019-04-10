@@ -7,9 +7,9 @@ import pytest
 class Test:
 
     def test_runnable(self):
-        return_code = subprocess.call("conda activate base && python printed-hw-seg.py input.png output/", shell=True)
-        assert return_code == 0, 'Conda environment activation or python script failed'
-        print("Successfully activated conda environment and ran target")
+        return_code = subprocess.call("sh script.sh input.png ./", shell=True)
+        assert return_code == 0, 'Launcher script or python runnable failed'
+        print("Successfully ran python runnable")
 
 
 
@@ -21,7 +21,7 @@ class Test:
             union = np.logical_or(target, prediction)
             return np.sum(intersection) / np.sum(union)
 
-        im_output = io.imread('output/output.png')
+        im_output = io.imread('output.png')
         im_mask = io.imread('mask.png')
         # Compute label-wise IoU scores
         IoUs = []

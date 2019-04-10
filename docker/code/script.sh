@@ -2,4 +2,4 @@
 inputImage=${1}
 outputFolder=${2}
 
-python /input/printed-hw-seg.py ${inputImage} ${outputFolder}
+/input/printed-hw-seg.bin ${inputImage} ${outputFolder}
