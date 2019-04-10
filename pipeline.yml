@@ -19,7 +19,7 @@ steps:
     stage: 'test'
     image: jumpst3r/printed-hw-segmentation
     commands:
-      - apt update && apt install python-pip python-setuptools python-dev build-essentials --no-install-recommends -y
+      - apt update && apt install python-pip python-setuptools python-dev build-essential --no-install-recommends -y
       - pip install wheel numpy scikit-image pytest
       - py.test
 
