@@ -19,16 +19,13 @@ steps:
     stage: 'test'
     image: jumpst3r/printed-hw-segmentation
     commands:
-      - cd /input/
-      - conda activate productionDocker
-      - py.test
-
+      - /bin/bash -c "cd /input/ && source /opt/conda/bin/activate productionDocker && ls && pip install pytest && pytest"
 
   PushingToDockerRegistry:
     type: push
     stage: 'deploy'
     title: Pushing To Dockerhub Registry
     candidate: jumpst3r/printed-hw-segmentation
-    tag: '${{CF_SHORT_REVISION}}'
+    tag: 'latest'
     image_name: jumpst3r/printed-hw-segmentation
     registry: dockerhub
