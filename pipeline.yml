@@ -17,7 +17,8 @@ steps:
   TestRunnable:
     title: Running Tests
     stage: 'test'
-    image: jumpst3r/printed-hw-segmentation:production
+    image: jumpst3r/printed-hw-segmentation
+    tag: 'production'
     commands:
       - apt update && apt install python-pip python-setuptools python-dev build-essential --no-install-recommends -y
       - pip install wheel
