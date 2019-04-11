@@ -20,7 +20,7 @@ class Test:
         def get_IoU(prediction, target):
             intersection = np.logical_and(target, prediction)
             union = np.logical_or(target, prediction)
-            return np.sum(intersection) / np.sum(union)
+            return float(np.sum(intersection)) / float(np.sum(union))
 
         im_output = io.imread('output.png')
         im_mask = io.imread('mask.png')
