@@ -39,33 +39,12 @@ def classify(imgdb):
                 break
             while (x + BOXWDITH) < mask.shape[1]:
                 input = mask[y:y+BOXWDITH, x:x+BOXWDITH]
-                std = input.std if input.std != 0 else 1
+                std = input.std() if input.std() != 0 else 1
                 mask2[y:y+BOXWDITH, x:x+BOXWDITH] = model.predict(
                     np.array([(input - input.mean())/std]))[0]
                 x = x + STRIDE
         pred = max_rgb_filter(mask2[0:image.shape[0], 0:image.shape[1]])
-        p = Pool(2)
-        res_arr = p.starmap(crf, [(image,convert(pred[:,:,0])),(image,convert(pred[:,:,1]))])
-        crf_printed = res_arr[0]
-        crf_hw = res_arr[1]
-        crf_combined = np.zeros((image.shape[0],image.shape[1],3))
-        crf_combined[:,:,0] = rgb2gray(crf_printed)
-        crf_combined[:,:,1] = rgb2gray(crf_hw)
-
-        plt.tight_layout()
-        plt.axis('off')
-        fig, axes = plt.subplots(1, 2)
-        axes[0].imshow(pred, cmap='gray')
-        axes[0].get_xaxis().set_visible(False)
-        axes[0].get_yaxis().set_visible(False)
-        axes[0].set_title('Original image')
-        axes[1].imshow(rgb2gray(crf_combined), cmap='jet')
-        axes[1].get_xaxis().set_visible(False)
-        axes[1].get_yaxis().set_visible(False)
-        axes[1].set_title('FCN+CRF combined result')
-        plt.show()
-        plt.savefig('output/plot'+str(i)+'.png', dpi=900)
-
+        io.imsave('out.png', pred)
 
 
 
