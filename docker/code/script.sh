@@ -2,4 +2,4 @@
 inputImage=${1}
 outputFolder=${2}
 
-/input/printed-hw-seg ${inputImage} ${outputFolder}
+/input/printed-hw-segmentation ${inputImage} ${outputFolder}
