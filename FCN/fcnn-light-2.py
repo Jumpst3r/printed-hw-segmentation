@@ -7,9 +7,11 @@ from skimage.color import gray2rgb
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 from fcn_helper_function import *
+from img_utils import getbinim
+import pickle
 
 np.random.seed(123)
-
+'''
 X_train = []
 X_valid = []
 y_train = []
@@ -32,16 +34,42 @@ def mask2rgb(mask):
     return result
 
 for im_in,im_mask in zip(inputs_train, masks_train):
-    X_train.append(img_as_float(gray2rgb(im_in)))
+    X_train.append(img_as_float(gray2rgb(getbinim(im_in))))
     y_train.append(mask2rgb(im_mask))
 
+
 for im_in,im_mask in zip(inputs_valid, masks_valid):
-    X_valid.append(img_as_float(gray2rgb(im_in)))
+    X_valid.append(img_as_float(gray2rgb(getbinim(im_in))))
     y_valid.append(mask2rgb(im_mask))
 
+print('dumping x_valid')
+pickle.dump(X_valid, open("models/x_valid.sav", "wb"))
+print('done x_valid')
+del X_valid
+print("dumping y_valid")
+pickle.dump(y_valid, open("models/y_valid.sav", "wb"))
+print("done")
+del y_valid
+print('dumping x_train')
+pickle.dump(X_train, open("models/x_train.sav", "wb"))
+print('done')
+del X_train
+print('dumping y_train')
+pickle.dump(y_train, open("models/y_train.sav", "wb"))
+exit()
+'''
+X_valid = pickle.load(open("models/x_valid.sav", "rb"))
+y_valid = pickle.load(open("models/y_valid.sav", "rb"))
+X_train = pickle.load(open("models/x_train.sav", "rb"))
+y_train = pickle.load(open("models/y_train.sav", "rb"))
 
-X_train = np.array(X_train)
+print('done reading')
 X_valid = np.array(X_valid)
+X_valid = (X_valid-X_valid.mean()) / X_valid.std()
+print('done valid std norm')
+X_train = np.array(X_train)
+X_train = (X_train-X_train.mean()) / X_train.std()
+
 
 y_train = np.array(y_train)
 y_valid = np.array(y_valid)
@@ -59,14 +87,19 @@ def FCN(nClasses,  input_height=256, input_width=256):
 
     x = Conv2D(32, (3, 3), activation='relu', padding='same',
                data_format=IMAGE_ORDERING)(img_input)
-    x = Conv2D(32, (3, 3), activation='relu',
+    skip_1_in = Conv2D(32, (3, 3), activation='relu',
                padding='same', data_format=IMAGE_ORDERING)(x)
-    x = MaxPooling2D((2, 2), strides=(2, 2), data_format=IMAGE_ORDERING)(x)
+        
+
+    x = MaxPooling2D((2, 2), strides=(2, 2), data_format=IMAGE_ORDERING)(skip_1_in)
 
     x = Conv2D(64, (3, 3), activation='relu',
                padding='same', data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(64, (3, 3), activation='relu',
+    skip_2_in = Conv2D(64, (3, 3), activation='relu',
                padding='same', data_format=IMAGE_ORDERING)(x)
+
+    x = Dropout(0.05)(skip_2_in)
+ 
 
     x = MaxPooling2D((2, 2), strides=(2, 2), data_format=IMAGE_ORDERING)(x)
 
@@ -75,12 +108,31 @@ def FCN(nClasses,  input_height=256, input_width=256):
     x = Conv2D(128, (3, 3), activation='relu',
                padding='same', data_format=IMAGE_ORDERING)(x)
 
-    x = (Conv2D(3, (1, 1), activation='relu',
+    x = Dropout(0.1)(x)
+
+
+    x = (Conv2D(54, (1, 1), activation='relu',
                 padding='same', data_format=IMAGE_ORDERING))(x)
 
-    x = Conv2DTranspose(nClasses, kernel_size=(4, 4),  strides=(
-        4, 4), use_bias=False, data_format=IMAGE_ORDERING)(x)
-    o = (Activation('softmax'))(x)
+    x = Dropout(0.2)(x)
+
+    skip_reduce_2 = Conv2D(nClasses, (1,1), activation='relu', padding='same')(skip_2_in)
+    
+
+    x = Conv2DTranspose(nClasses, kernel_size=(2, 2),  strides=(
+        2, 2), use_bias=False, data_format=IMAGE_ORDERING)(x)
+
+    skip_2_out = Add()([x, skip_reduce_2])
+
+    skip_reduce_1 = Conv2D(nClasses, (1,1), activation='relu', padding='same')(skip_1_in)
+
+
+    x = Conv2DTranspose(nClasses, kernel_size=(2, 2), strides=(
+        2, 2), use_bias=False, data_format=IMAGE_ORDERING)(skip_2_out)
+
+    skip_1_out = Add()([x, skip_reduce_1])
+
+    o = (Activation('softmax'))(skip_1_out)
 
     model = Model(img_input, o)
 
@@ -90,14 +142,15 @@ def FCN(nClasses,  input_height=256, input_width=256):
 model = FCN(nClasses=3,
             input_height=256,
             input_width=256)
-model.summary()
-model.compile(loss=[weighted_categorical_crossentropy([1, 1, 0.1])],
+print(model.summary())
+
+model.compile(loss=[weighted_categorical_crossentropy([0.4,0.5,0.1])],
               optimizer='adam',
               metrics=[IoU])
 
 ################################################# Tensorboard callbacks ############################################
 
-model.fit(x=X_train, y=y_train, epochs=100, batch_size=32, validation_data=(X_valid,y_valid))
+model.fit(x=X_train, y=y_train, epochs=15, batch_size=16, validation_data=(X_valid,y_valid))
 
 
 model.save('models/fcnn_bin.h5')
