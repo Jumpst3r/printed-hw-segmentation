@@ -22,7 +22,7 @@ class Test:
             union = np.logical_or(target, prediction)
             return float(np.sum(intersection)) / float(np.sum(union))
 
-        im_output = io.imread('output.png')
+        im_output = io.imread('fcn_out.png')
         im_mask = io.imread('mask.png')
         # Compute label-wise IoU scores
         IoUs = []
