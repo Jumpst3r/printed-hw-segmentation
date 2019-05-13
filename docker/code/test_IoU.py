@@ -29,10 +29,10 @@ class Test:
         for channel in range(3):
             IoUs.append(get_IoU(im_output[:, :, channel], im_mask[:, :, channel]))
         IoUs = np.array(IoUs)
-        assert IoUs[0] > 0.95, 'IoU for label [printed] on trained data is less than 0.95 (IoU=' + str(IoUs[0]) + ')'
-        assert IoUs[1] > 0.95, 'IoU for label [handwritten] on trained data is less than 0.95 (IoU=' + str(
+        assert IoUs[0] > 0.7, 'IoU for label [printed] on trained data is less than 0.7 (IoU=' + str(IoUs[0]) + ')'
+        assert IoUs[1] > 0.7, 'IoU for label [handwritten] on trained data is less than 0.95 (IoU=' + str(
             IoUs[1]) + ')'
-        assert IoUs[2] > 0.95, 'IoU for label [background] on trained data is less than 0.95 (IoU=' + str(IoUs[2]) + ')'
+        assert IoUs[2] > 0.95, 'IoU for label [background] on trained data is less than 0.7 (IoU=' + str(IoUs[2]) + ')'
         print("IoU test passed with threshold [" + str(THRESH) + "]")
         print("IoU for label [printed]: " + str(IoUs[0]))
         print("IoU for label [handwritten]: " + str(IoUs[1]))
