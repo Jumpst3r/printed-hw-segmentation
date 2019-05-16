@@ -1,4 +1,4 @@
-#Source files for the chapter 3 of the Bsc Thesis
+# Source files for the chapter 3 of the Bsc Thesis
 
 _This branch contains the files which were used to create the models which are discussed in the third chapter of the bachelor thesis._
 
