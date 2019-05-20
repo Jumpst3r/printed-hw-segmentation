@@ -12,14 +12,8 @@ With each release a docker image of the code is published on [docker hub](https:
 
 ## Usage
 
-### Using the provided release binary (x64-Linux)
-
-*Requirements: libxcb1, libexpat1*
-
-`./printed-hw-seg.bin <INPUT IMAGE> <OUTPUT DIR>`
-
-### Usage using the docker image
-
-After pulling (`docker pull jumpst3r/printed-hw-segmentation:latest`) the image, segmentation can be run with 
+After pulling (`docker pull jumpst3r/printed-hw-segmentation:latest`) the image, the model can be applied to an image with 
 
 `docker run -it --rm -v /FULL_PATH_TO/example.png:/input/example.png -v /FULL_PATH_TO_OUTPUT_FOLDER/:/output/ jumpst3r/printed-hw-segmentation sh /input/script.sh /input/example.png /output/`
+
+The resulting image will be saved in the output path provided by the user
