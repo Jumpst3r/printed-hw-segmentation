@@ -41,10 +41,9 @@
                 "options": {
                     "mimeTypes": {
                         "allowed": [
-                            "image/jpeg",
                             "image/png"
                         ],
-                        "default": "image/jpeg"
+                        "default": "image/png"
                     },
                     "colorspace": "binary",
                     "visualization": true
@@ -53,9 +52,10 @@
         }
     ],
     "method": {
+				"inputFolder": "input/",
         "imageType": "docker",
         "imageName": "jumpst3r/printed-hw-segmentation",
-        "testData": "https://drive.google.com/uc?authuser=0&id=1UAa6rWknEkEAb-aoxxxLSOJ5jMzi535J&export=download",
+        "testData": "https://drive.google.com/uc?export=download&id=1Q9F5rUN93xTWnRxRB8g4eGXLYZzdDUnR",
         "executableType": "bash",
         "executable_path": "/input/script.sh"
     }
