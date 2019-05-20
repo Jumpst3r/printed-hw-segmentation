@@ -22,4 +22,4 @@ The resulting image will be saved in the output path provided by the user
 
 Follow the guide [here](https://lunactic.github.io/DIVAServicesweb/articles/installation/) to install the DIVA services framework on a server.
 
-Once install, our method can be installed by make a POST request to the `alogithms` endpoint. This request should contain the JSON file `install.json` located in the `requests` folder of this repository. The JSON file `upload.json` can then be run to upload an image to the server. Finally the method can be executed using the JSON file `run.json` 
+Once install, our method can be installed by make a POST request to the `alogithms` endpoint. This request should contain the JSON file `install.json` located in the `diva-service` folder of this repository. This will return a link pointing to the newly created method. The JSON file `upload.json` can then be run to upload an image to the server by making a request to that link. This will return an ID for the uploaded image. Finally the method can be executed using the provided ID and the JSON file `run.json` 
