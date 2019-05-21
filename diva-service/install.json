@@ -1,7 +1,7 @@
 {
     "general": {
-        "name": "Nicolas Printed Handwritten Segmentation",
-        "description": "pixelwise printed and handwritten segmentation",
+        "name": "Printed Handwritten Segmentation",
+        "description": "pixelwise printed and handwritten segmentation using a lightweight FCN and CRF post-processing",
         "developer": "Nicolas Dutly",
         "affiliation": "University Of Fribourg",
         "email": "nicolas.dutly@unifr.ch",
