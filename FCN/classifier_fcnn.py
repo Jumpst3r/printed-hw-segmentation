@@ -21,8 +21,13 @@ BOXWDITH = 256
 STRIDE = BOXWDITH - 10
 
 def classify(image):
-    model = load_model('/input/models/fcnn_bin.h5', custom_objects={
-                        'loss': weighted_categorical_crossentropy([0.4,0.5,0.1]), 'IoU': IoU})
+    try:
+        model = load_model('/input/models/fcnn_bin.h5', custom_objects={
+                    'loss': weighted_categorical_crossentropy([0.4,0.5,0.1]), 'IoU': IoU})
+    except OSError:
+        # Use relative file path if anyone tries to run the generated binary without using the provided docker image
+        model = load_model('models/fcnn_bin.h5', custom_objects={
+                            'loss': weighted_categorical_crossentropy([0.4,0.5,0.1]), 'IoU': IoU})
     orgim = np.copy(image)
     image = img_as_float(gray2rgb(getbinim(image)))
     maskw = int((np.ceil(image.shape[1] / BOXWDITH) * BOXWDITH)) + 1
@@ -57,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument("output_folder", help="output folder")
     args = parser.parse_args()
     inputim = io.imread(args.input_image)
-    output_folder = io.imread(args.output_folder)
+    output_folder = args.output_folder
 
 
     out = classify(inputim)

@@ -1,7 +1,7 @@
 import numpy as np
 import pydensecrf.densecrf as dcrf
 from pydensecrf.utils import (unary_from_softmax)
-from skimage.color import gray2rgb
+from skimage.color import gray2rgb, rgba2rgb
 from skimage import img_as_ubyte
 import numpy.random as rd
 NB_ITERATIONS = 10
@@ -21,11 +21,11 @@ Function which returns the labelled image after applying CRF
 
 def crf(original_image, annotated_image, use_2d=True):
     rd.seed(123)
-    original_image = img_as_ubyte(original_image)
     if len(original_image.shape) < 3:
         original_image = gray2rgb(original_image)
-
-
+    if len(original_image.shape) == 3 and original_image.shape[2]==4:
+        original_image = rgba2rgb(original_image)
+    original_image = img_as_ubyte(original_image)
     annotated_image = np.moveaxis(annotated_image, -1, 0)
     annotated_image = annotated_image.copy(order='C')
     prob = annotated_image
@@ -36,7 +36,6 @@ def crf(original_image, annotated_image, use_2d=True):
 
         # get unary potentials (neg log probability)
         U = unary_from_softmax(annotated_image)
-        print(U.shape)
         #U = unary_from_labels(labels, n_labels, gt_prob=0.7, zero_unsure=False)
         d.setUnaryEnergy(U)
 
