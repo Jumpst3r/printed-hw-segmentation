@@ -2,4 +2,4 @@
 inputImage=${1}
 outputFolder=${2}
 
-/input/printed-hw-segmentation ${inputImage} ${outputFolder}
+/input/printed-hw-segmentation --enableCRF ${inputImage} ${outputFolder}
