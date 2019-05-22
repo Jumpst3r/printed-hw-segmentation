@@ -10,7 +10,19 @@ from fcn_helper_function import *
 from img_utils import getbinim
 import pickle
 
+"""
+This file defines the model fcn-light-1. It is a simple fully convolutional model based on the FCN-8 architecture
+"""
+
 np.random.seed(123)
+
+# If you need to create feature vectors, you need to
+# 1) Download the dataset printed-hw-seg
+# 2) Run the crop.py utility
+# 3) Uncomment the code bellow
+
+# Preferably you can also download the prepared feature vectors by contacting me
+
 '''
 X_train = []
 X_valid = []
@@ -58,6 +70,7 @@ print('dumping y_train')
 pickle.dump(y_train, open("models/y_train.sav", "wb"))
 exit()
 '''
+
 X_valid = pickle.load(open("models/x_valid.sav", "rb"))
 y_valid = pickle.load(open("models/y_valid.sav", "rb"))
 X_train = pickle.load(open("models/x_train.sav", "rb"))
@@ -132,8 +145,6 @@ print(model.summary())
 model.compile(loss=[weighted_categorical_crossentropy([0.4,0.5,0.1])],
               optimizer='adam',
               metrics=[IoU])
-
-################################################# Tensorboard callbacks ############################################
 
 model.fit(x=X_train, y=y_train, epochs=15, batch_size=30, validation_data=(X_valid,y_valid))
 

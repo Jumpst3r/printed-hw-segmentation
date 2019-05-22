@@ -1,16 +1,18 @@
+'''
+This file includes a number of helper functions for the keras models.
+'''
+
+
 import keras.backend as K
 import numpy as np
 import tensorflow as tf
 
-
+"""
+A weighted version of categorical_crossentropy for keras (2.0.6). This lets you apply a weight to unbalanced classes.
+@url: https://gist.github.com/wassname/ce364fddfc8a025bfab4348cf5de852d
+@author: wassname
+"""
 def weighted_categorical_crossentropy(weights):
-    """ weighted_categorical_crossentropy
-
-        Args:
-            * weights<ktensor|nparray|list>: crossentropy weights
-        Returns:
-            * weighted categorical crossentropy function
-    """
     if isinstance(weights, list) or isinstance(np.ndarray):
         weights = K.variable(weights)
 
@@ -29,7 +31,7 @@ def weighted_categorical_crossentropy(weights):
                 'WeightedCategoricalCrossentropy: not valid with logits')
     return loss
 ######################################## IoU metric ############################################
-
+# https://www.kaggle.com/c/tgs-salt-identification-challenge/discussion/63044
 def castF(x):
     return K.cast(x, K.floatx())
 

@@ -10,6 +10,10 @@ from fcn_helper_function import *
 from img_utils import getbinim
 import pickle
 
+"""
+This file defines the model fcn-light-2. It is a fully convolutional model based on the FCN-8 architecture
+"""
+
 np.random.seed(123)
 '''
 X_train = []
@@ -148,7 +152,6 @@ model.compile(loss=[weighted_categorical_crossentropy([0.4,0.5,0.1])],
               optimizer='adam',
               metrics=[IoU])
 
-################################################# Tensorboard callbacks ############################################
 
 model.fit(x=X_train, y=y_train, epochs=15, batch_size=16, validation_data=(X_valid,y_valid))
 

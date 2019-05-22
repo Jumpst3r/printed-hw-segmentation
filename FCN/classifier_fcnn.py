@@ -1,18 +1,27 @@
+'''
+This file can be used to test the models on input images. It includes features such as
+1) Enabling CRF postprocessing
+2) Enabling visualisations
+3) Mean IoU calculations if a GT image is provided.
+
+Run python 'classifier_fcnn.py -h' for more information
+
+'''
+
+import argparse
 import sys
 import warnings
-from multiprocessing import Pool
 
 import matplotlib.pyplot as plt
 import numpy as np
 import skimage.io as io
-from keras.engine.saving import load_model
-from skimage import img_as_ubyte, img_as_float
-from skimage.color import rgb2gray, gray2rgb
-
-import argparse
 from fcn_helper_function import weighted_categorical_crossentropy, IoU
 from img_utils import getbinim, max_rgb_filter, get_IoU, getBinclassImg, mask2rgb, rgb2mask
+from keras.engine.saving import load_model
 from post import crf
+from skimage import img_as_float
+from skimage.color import gray2rgb
+
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
 
