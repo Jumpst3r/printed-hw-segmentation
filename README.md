@@ -15,6 +15,10 @@ _left: input image, middle: raw FCN output, right: output after CRF postprocessi
 
 With each release a docker image of the code is published on [docker hub](https://cloud.docker.com/repository/docker/jumpst3r/printed-hw-segmentation). This image can be used in conjuction with [DIVA services](https://github.com/lunactic/DIVAServices) to provide segmenation as a web service. It can also be used locally.
 
+## Web service live demo
+
+The web service version of this project can be tested at the following [link](http://wuersch.pillo-srv.ch/#/algorithm/5d31d9aa3b6e6253ceab3e27)
+
 ## Local Usage
 
 After pulling (`docker pull jumpst3r/printed-hw-segmentation:latest`) the image, the model can be applied to an image with 
