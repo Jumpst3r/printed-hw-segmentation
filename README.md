@@ -9,7 +9,7 @@
 
 **printed-hw-segmentation** is a tool that allows segmentation (identification) of printed and handwritten text using a fully convolutional network with CRF post-processing.
 
-If you make use of this work please cite it as
+If you make use of this work (the corresponding paper can be found [here](https://ieeexplore.ieee.org/document/8892961)), please cite it as:
 ```
 @article{Dutly2019PHTIWSAP,
   title={PHTI-WS: A Printed and Handwritten Text Identification Web Service Based on FCN and CRF Post-Processing},
