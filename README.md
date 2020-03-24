@@ -3,7 +3,7 @@
 
 [![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/jumpst3r/Jumpst3r%2FBscThesis%2FBuildTestPush?branch=production&key=eyJhbGciOiJIUzI1NiJ9.NWNhYTQwZDAyYTE1MmZmMGQ2Y2FjOGM1.t3CzjCcStPDcqAcTi1nh8zpYB_E3tQmnemqSgDTbyQM&type=cf-1)]( https://g.codefresh.io/pipelines/BuildTestPush/builds?repoOwner=Jumpst3r&repoName=printed-hw-segmentation&serviceName=Jumpst3r%2Fprinted-hw-segmentation&filter=trigger:build~Build;branch:production;pipeline:5caa428088545f2b9e9e45e9~BuildTestPush) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub release](https://img.shields.io/github/release/jumpst3r/printed-hw-segmentation.svg)
 
-
+### _published as:_ PHTI-WS: A Printed and Handwritten Text Identification Web Service Based on FCN and CRF Post-Processing* in  _ICDAR-WS 2019_
 
 ## Introduction
 
