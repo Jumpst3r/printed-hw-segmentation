@@ -29,7 +29,7 @@ With each release a docker image of the code is published on [docker hub](https:
 
 ## Web service live demo
 
-The web service version of this project can be tested at the following [link](http://wuersch.pillo-srv.ch/#/algorithm/5e15dbac783491699b0c036a)
+The web service version of this project can be tested at the following [link](http://wuersch.pillo-srv.ch/#/algorithm/5ff5b809fad531d7dc0f29c4)
 
 ## Local Usage
 
